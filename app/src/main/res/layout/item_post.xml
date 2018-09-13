@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    android:layout_margin="@dimen/dp05"
+    app:cardElevation="@dimen/dp05"
+    app:cardUseCompatPadding="false">
+
+    <ImageView
+        android:id="@+id/item_post_photo"
+        style="@style/itemPostPhoto"
+        android:src="@drawable/bg"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/item_post_title"
+        style="@style/itemPostTitle"
+        tools:text="找一起去泰国玩的朋友" />
+
+    <TextView
+        android:id="@+id/item_post_content"
+        style="@style/itemPostContent"
+        android:ellipsize="end"
+        android:lines="2"
+        tools:text="本周六成都出发,寻找三名队友，老司机带队啦。" />
+
+    <Button
+        android:id="@+id/item_post_share"
+        style="@style/itemPostActionText"
+        android:layout_width="@dimen/dp50"
+        android:layout_height="@dimen/dp20"
+        android:layout_marginStart="@dimen/dp16"
+        android:background="@android:color/transparent"
+        android:text="@string/share" />
+
+    <TextView
+        style="@style/itemPostActionText"
+        android:layout_marginStart="@dimen/dp100"
+        android:text="@string/view_more"
+        android:textColor="@color/colorPrimaryDark" />
+</android.support.v7.widget.CardView>
