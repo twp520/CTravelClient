@@ -17,6 +17,7 @@ import com.colin.ctravel.bean.User
 import com.colin.ctravel.presenter.MainPresenter
 import com.colin.ctravel.presenter.imp.MainPresenterImp
 import com.colin.ctravel.util.GlideApp
+import com.colin.ctravel.util.jumpActivity
 import com.colin.ctravel.view.MainView
 import com.scwang.smartrefresh.header.TaurusHeader
 import kotlinx.android.synthetic.main.activity_main.*
@@ -47,7 +48,6 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView {
         val toggle = ActionBarDrawerToggle(this, main_drawer, base_toolbar, R.string.open, R.string.close)
         toggle.syncState()
         main_drawer.addDrawerListener(toggle)
-
     }
 
     private fun initRecyclerView() {
@@ -59,9 +59,9 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView {
         main_recycler.adapter = mAdapter
         main_fab.isEnabled = true
         main_fab.setOnClickListener {
-            showTipMessage("发布一个行程帖子！")
+            jumpActivity(SendPostActivity::class.java)
         }
-        main_refresh.autoRefresh(1000)
+        main_refresh.autoRefresh(300)
         main_refresh.setOnRefreshListener {
             //刷新数据
             mPresenter?.loadData(1)
@@ -90,6 +90,7 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView {
 
     override fun refreshList(data: MutableList<PostInfo>) {
         mAdapter?.replaceData(data)
+        main_refresh.finishRefresh(1000, true)
     }
 
     override fun getSnackbarView(): View {

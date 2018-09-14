@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
 
@@ -57,5 +57,46 @@
         <item name="android:layout_marginBottom">@dimen/dp10</item>
         <item name="android:layout_gravity">bottom</item>
         <item name="android:textSize">@dimen/font_size_14</item>
+    </style>
+
+    <style name="pagePadding">
+        <item name="android:layout_marginEnd">@dimen/dp16</item>
+        <item name="android:layout_marginStart">@dimen/dp16</item>
+    </style>
+
+    <style name="postInput" parent="pagePadding">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dp60</item>
+    </style>
+
+    <style name="postInput.Haf" parent="pagePadding">
+        <item name="android:layout_width">@dimen/dp150</item>
+        <item name="android:layout_height">@dimen/dp60</item>
+        <item name="android:layout_marginTop">@dimen/dp10</item>
+    </style>
+
+    <style name="postInputEdit">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="pagePadding.Warp">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="pagePadding.MatchWarp">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="pagePadding.MatchMatch">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="spinnerItemStyle">
+
     </style>
 </resources>

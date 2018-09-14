@@ -1,14 +1,24 @@
 package com.colin.ctravel.module
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
+import android.content.Context
 import com.colin.ctravel.bean.PostInfo
 import com.colin.ctravel.bean.User
+import com.colin.ctravel.luban.Luban
 import com.colin.ctravel.net.BuildAPI
 import com.colin.ctravel.net.HandResultFunc
+import com.colin.ctravel.photopicker.Image
 import com.colin.ctravel.util.LOG_TAG
+import com.colin.ctravel.util.OSSManager
+import com.colin.ctravel.util.photoCompressDirPath
 import com.socks.library.KLog
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import org.json.JSONArray
+import java.io.File
 
 object TravelModule {
     private var cacheMap: HashMap<String, Any> = hashMapOf()
@@ -52,6 +62,61 @@ object TravelModule {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
     }
+
+    /**
+     * 同步上传单张图片到阿里云OSS
+     * @param file 图片文件
+     * @return 图片地址
+     */
+    private fun upLoadPhoto(file: File): Flowable<String> {
+        return Flowable.just(OSSManager.upLoadFileSync(file)).subscribeOn(Schedulers.io())
+    }
+
+    /**
+     * 上传多张图片到阿里云OSS
+     * @param images 图片集合
+     * @return 多张图片地址的json字符串
+     */
+    fun upLoadPhoto(images: MutableList<Image>, context: Context?): LiveData<String> {
+        val imgArray = JSONArray()
+
+        val liveData: MutableLiveData<String> = MutableLiveData()
+        Flowable.fromIterable(images)
+                .map {
+                    //单个压缩图片，返回list包装的集合
+                    Luban.with(context)
+                            .load(it.imagePath)
+                            .setTargetDir(photoCompressDirPath)
+                            .get()
+                }
+                .subscribeOn(Schedulers.io())
+                .flatMap {
+                    //迭代上传
+                    Flowable.fromIterable(it)
+                }
+                .subscribeOn(Schedulers.io())
+                .flatMap {
+                    //上传单个文件
+                    upLoadPhoto(it)
+                }.subscribe({
+                    imgArray.put(it) //放入单个图片地址
+                }, {
+                    //发生错误
+                    liveData.postValue("result_fail")
+                }, {
+                    //完成全部上传
+                    liveData.postValue(imgArray.toString())
+                })
+        return liveData
+    }
+
+    fun sendPost(map: HashMap<String, Any>): Observable<String> {
+        return BuildAPI.getAPISevers().sendPost(map)
+                .map(HandResultFunc())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
 
     /**
      * 缓存用户信息

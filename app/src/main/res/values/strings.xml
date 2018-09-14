@@ -9,9 +9,19 @@
     <string name="loginWX">微信登陆</string>
     <string name="register">一步注册</string>
 
+    <!-- post页面 -->
+    <string name="hint_post_title">写个标题吧</string>
+    <string name="hint_post_content">说点什么吧</string>
+    <string name="hint_post_des">想去的地儿</string>
+    <string name="hint_post_dep">出发的地儿</string>
+    <string name="post_title">发布行程</string>
+    <string name="post_startDateS">出发时间:%1$s</string>
+    <string name="post_startDate">出发时间:</string>
 
     <string name="share">分享</string>
     <string name="view_more">查看详情</string>
     <string name="open">open</string>
     <string name="close">close</string>
+
+    <string name="picker_done">%1$d / %2$d</string>
 </resources>

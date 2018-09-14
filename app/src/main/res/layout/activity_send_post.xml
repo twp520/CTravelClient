@@ -1,13 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".activity.SendPostActivity">
 
-    <include layout="@layout/base_toolbar" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/base_toolbar" />
+
+        <!-- 标题-->
+        <android.support.design.widget.TextInputLayout
+
+            style="@style/postInput"
+            android:layout_marginTop="@dimen/dp10">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/send_post_edit_title"
+                style="@style/postInputEdit"
+                android:hint="@string/hint_post_title"
+                android:textSize="@dimen/font_size_19" />
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- 出发地和目的地 -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputLayout style="@style/postInput.Haf">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/send_post_edit_des"
+                    style="@style/postInputEdit"
+                    android:hint="@string/hint_post_des"
+                    android:textSize="@dimen/font_size_16" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                style="@style/postInput.Haf"
+                android:layout_gravity="end">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/send_post_edit_dep"
+                    style="@style/postInputEdit"
+                    android:hint="@string/hint_post_dep"
+                    android:textSize="@dimen/font_size_16" />
+            </android.support.design.widget.TextInputLayout>
+        </FrameLayout>
+        <!-- 出发时间 -->
+        <TextView
+            android:id="@+id/send_post_date"
+            style="@style/pagePadding.Warp"
+            android:drawablePadding="@dimen/dp05"
+            android:drawableStart="@drawable/icon_date"
+            android:gravity="center"
+            android:textSize="@dimen/font_size_16"
+            tools:text="@string/post_startDate" />
+
+        <!-- 内容 -->
+        <android.support.design.widget.TextInputLayout
+            style="@style/postInput"
+            android:layout_height="@dimen/dp200"
+            android:layout_marginTop="@dimen/dp10"
+            android:background="@color/eee">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/send_post_edit_content"
+                style="@style/postInputEdit"
+                android:background="@android:color/transparent"
+                android:gravity="start"
+                android:hint="@string/hint_post_content"
+                android:padding="@dimen/dp05"
+                android:textSize="@dimen/font_size_14" />
+        </android.support.design.widget.TextInputLayout>
 
 
-</LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/send_post_list"
+            style="@style/pagePadding.MatchWarp"
+            android:layout_marginTop="@dimen/dp10"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="android.support.v7.widget.GridLayoutManager"
+            app:spanCount="3" />
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

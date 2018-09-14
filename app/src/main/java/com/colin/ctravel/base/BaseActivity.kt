@@ -3,9 +3,11 @@ package com.colin.ctravel.base
 import android.content.Context
 import android.os.Bundle
 import android.support.annotation.LayoutRes
+import android.support.annotation.MenuRes
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.view.MenuItem
 import android.view.View
 import com.colin.ctravel.R
 import com.colin.ctravel.net.ApiException
@@ -28,7 +30,27 @@ abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView {
     }
 
     fun setToolbarTitle(titleRes: Int) {
-        base_toolbar.setTitle(titleRes)
+        supportActionBar?.setTitle(titleRes)
+    }
+
+    fun setNavClick() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        base_toolbar.setNavigationOnClickListener {
+            finish()
+        }
+    }
+
+    fun addToolbarMenu(@MenuRes menuId: Int) {
+        base_toolbar.inflateMenu(menuId)
+        base_toolbar.setOnMenuItemClickListener {
+            onMenuClick(it)
+            return@setOnMenuItemClickListener true
+        }
+    }
+
+    protected open fun onMenuClick(menuItem: MenuItem) {
+
     }
 
     @LayoutRes

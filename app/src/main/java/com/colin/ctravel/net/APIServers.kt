@@ -4,10 +4,7 @@ import com.colin.ctravel.base.BaseResultBean
 import com.colin.ctravel.bean.PostInfo
 import com.colin.ctravel.bean.User
 import io.reactivex.Observable
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 /**
  * create by colin
@@ -25,4 +22,8 @@ interface APIServers {
 
     @GET("/post/getPosts")
     fun getAllPost(): Observable<BaseResultBean<MutableList<PostInfo>>>
+
+    @POST("/post/sendPost")
+    @FormUrlEncoded
+    fun sendPost(@FieldMap map: HashMap<String, Any>): Observable<BaseResultBean<String>>
 }
