@@ -5,12 +5,14 @@ import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import com.colin.ctravel.bean.PostInfo
 import com.colin.ctravel.bean.User
+import com.colin.ctravel.db.AppDataBase
 import com.colin.ctravel.luban.Luban
 import com.colin.ctravel.net.BuildAPI
 import com.colin.ctravel.net.HandResultFunc
 import com.colin.ctravel.photopicker.Image
 import com.colin.ctravel.util.LOG_TAG
 import com.colin.ctravel.util.OSSManager
+import com.colin.ctravel.util.SPUtils
 import com.colin.ctravel.util.photoCompressDirPath
 import com.socks.library.KLog
 import io.reactivex.Flowable
@@ -85,7 +87,7 @@ object TravelModule {
                 .map {
                     //单个压缩图片，返回list包装的集合
                     Luban.with(context)
-                            .load(it.imagePath)
+                            .load(it.imageFile)
                             .setTargetDir(photoCompressDirPath)
                             .get()
                 }
@@ -102,6 +104,7 @@ object TravelModule {
                     imgArray.put(it) //放入单个图片地址
                 }, {
                     //发生错误
+                    it.printStackTrace()
                     liveData.postValue("result_fail")
                 }, {
                     //完成全部上传
@@ -122,8 +125,19 @@ object TravelModule {
      * 缓存用户信息
      * @param  user 用户信息
      */
-    fun saveUser(user: User) {
+    fun saveUser(user: User, context: Context) {
         cacheMap["user"] = user
+        //固化用户信息
+        Observable.create<Long> {
+            val row = AppDataBase.getInstance(context).userDao().insertUser(user)
+            if (row == 1L) {
+                it.onNext(row)
+                it.onComplete()
+            } else it.onError(NullPointerException("数据库插入异常"))
+        }.subscribeOn(Schedulers.io())
+                .subscribe()
+        SPUtils.getInstance().put("token", user.token)
+        SPUtils.getInstance().put("uid", user.id)
     }
 
     /**
@@ -132,10 +146,30 @@ object TravelModule {
      * 如果没有则返回NULL
      * @return 用户信息
      */
-    fun getUser(): User? {
+    fun getUser(context: Context): Observable<User>? {
         val user = cacheMap["user"]
-        if (user != null && user is User)
-            return user
+        if (user != null && user is User) {
+            return Observable.just(user)
+        }
+        val uid = getUserId()
+        if (uid != -1) {
+            return Observable.create<User> {
+                val dbUser = AppDataBase.getInstance(context)
+                        .userDao()
+                        .getLoginUser(uid)
+                it.onNext(dbUser)
+                it.onComplete()
+            }.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+        }
         return null
+    }
+
+    fun getUserId(): Int {
+        return SPUtils.getInstance().getInt("uid", -1)
+    }
+
+    fun getToken(): String {
+        return SPUtils.getInstance().getString("token")
     }
 }

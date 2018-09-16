@@ -19,7 +19,7 @@ class LoginPresenterImp(view: LoginView) : BasePresenterImp<LoginView>(view), Lo
         val disposable = TravelModule.login(account, pwd)
                 .subscribe({
                     //保存用户信息
-                    TravelModule.saveUser(it)
+                    TravelModule.saveUser(it,view!!.getViewContext())
                     view?.dismissLoading()
                     view?.loginSuccess()
                 }, {

@@ -1,12 +1,17 @@
 package com.colin.ctravel.activity
 
+import android.Manifest
 import com.colin.ctravel.R
 import com.colin.ctravel.base.BaseActivity
 import com.colin.ctravel.presenter.LoginPresenter
 import com.colin.ctravel.presenter.imp.LoginPresenterImp
+import com.colin.ctravel.util.createOrExistsDir
 import com.colin.ctravel.util.jumpActivity
+import com.colin.ctravel.util.photoCompressDirPath
 import com.colin.ctravel.view.LoginView
+import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.activity_login.*
+import java.io.File
 
 class LoginActivity : BaseActivity<LoginPresenter>(), LoginView {
 
@@ -20,6 +25,15 @@ class LoginActivity : BaseActivity<LoginPresenter>(), LoginView {
 
     override fun initView() {
         supportActionBar?.title = getString(R.string.login_title)
+        //创建文件夹
+        val permission = RxPermissions(this)
+        permission.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe {
+                    if (it) {
+                        val photoCompress = File(photoCompressDirPath)
+                        createOrExistsDir(photoCompress)//创建压缩缓存文件夹
+                    }
+                }
         login_btn_account?.setOnClickListener { _ ->
             //进行登陆检查
             login()

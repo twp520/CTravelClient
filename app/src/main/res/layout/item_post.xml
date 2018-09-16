@@ -17,13 +17,16 @@
     <TextView
         android:id="@+id/item_post_title"
         style="@style/itemPostTitle"
-        tools:text="找一起去泰国玩的朋友" />
+        tools:text="射手座小姐姐约你去泰国玩儿，快戳我！" />
+
+    <TextView
+        android:id="@+id/item_post_user_title"
+        style="@style/itemPostUserTitle"
+        tools:text="我是用户输入的标题" />
 
     <TextView
         android:id="@+id/item_post_content"
         style="@style/itemPostContent"
-        android:ellipsize="end"
-        android:lines="2"
         tools:text="本周六成都出发,寻找三名队友，老司机带队啦。" />
 
     <Button

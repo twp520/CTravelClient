@@ -25,7 +25,7 @@ class SendPostPresenterImp(view: SendPostView) : BasePresenterImp<SendPostView>(
         if (view?.getDateText() != null) {
             map["startTime"] = TimeUtils.string2Millis(view?.getDateText(), SimpleDateFormat("yyyy-mm-dd"))
         }
-        map["userId"] = TravelModule.getUser()?.id ?: -1
+        map["userId"] = TravelModule.getUserId()
         map["content"] = view?.getContentText() ?: ""
         val photos = view?.getPhotos()
         if (photos != null && photos.size > 0) {

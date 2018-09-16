@@ -3,7 +3,16 @@ package com.colin.ctravel.photopicker
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.content.ContentResolver
+import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Build
 import android.provider.MediaStore
+import android.support.v4.content.FileProvider
+import com.colin.ctravel.util.photoCompressDirPath
+import java.io.File
+
 
 /**
  *create by colin 2018/9/14
@@ -66,6 +75,59 @@ class ImageScanner(private var mContentResolver: ContentResolver) {
             }
         }.start()
         return liveData
+    }
+
+    fun getCaptureIntent(outUri: Uri): Intent {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, outUri)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        return intent
+    }
+
+    fun getCropIntent(imgUri: Uri, outUri: Uri): Intent {
+        val intent = Intent("com.android.camera.action.CROP")
+        intent.setDataAndType(imgUri, "image/*")
+        // 下面这个crop=true是设置在开启的Intent中设置显示的VIEW可裁剪
+        intent.putExtra("crop", "true")
+        //该参数可以不设定用来规定裁剪区的宽高比
+        //        intent.putExtra("aspectX", 2);
+        //        intent.putExtra("aspectY", 1);
+        //该参数设定为你的imageView的大小
+//        intent.putExtra("outputX", 600)
+//        intent.putExtra("outputY", 500)
+        intent.putExtra("scale", true)
+        //是否返回bitmap对象
+        intent.putExtra("return-data", false)
+        //        intent.setData(outUri);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, outUri)
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString())//输出图片的格式
+        intent.putExtra("noFaceDetection", true) // 头像识别
+        return intent
+    }
+
+    fun generateCameraFilePath(): String {
+        return android.os.Environment.getExternalStoragePublicDirectory(android.os.Environment.DIRECTORY_DCIM)
+                .absolutePath + "/JPEG_CTravel_head.jpg"
+    }
+
+    fun generateCameraFile(): File? {
+        return File(generateCameraFilePath())
+    }
+
+    fun generateCropFilePath(): String {
+        return "file:///$photoCompressDirPath/JPEG_CTravel_head_crop.jpg"
+    }
+
+    fun getCropFilePath(): String {
+        return "$photoCompressDirPath/JPEG_CTravel_head_crop.jpg"
+    }
+
+    fun getUriFromFile(context: Context, file: File): Uri {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            FileProvider.getUriForFile(context, "com.colin.ctravel.FileProvider", file)
+        else
+            Uri.fromFile(file)
     }
 
 }

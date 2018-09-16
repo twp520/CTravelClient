@@ -1,6 +1,7 @@
 package com.colin.ctravel.net
 
 import com.colin.ctravel.BuildConfig
+import com.colin.ctravel.module.TravelModule
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -26,6 +27,7 @@ object BuildAPI {
                             .newBuilder()
                             .addHeader("Content-Type", "application/x-www-form-urlencoded")
                             .addHeader("Accept", "application/json;charset=UTF-8")
+                            .addHeader("token", TravelModule.getToken())
                             .build()
                     chain.proceed(request)
                 }

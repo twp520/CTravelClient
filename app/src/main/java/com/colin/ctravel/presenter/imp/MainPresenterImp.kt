@@ -12,10 +12,12 @@ import com.colin.ctravel.view.MainView
 class MainPresenterImp(view: MainView) : BasePresenterImp<MainView>(view), MainPresenter {
 
     override fun init() {
-        val user = TravelModule.getUser()
-        user?.let {
-            view?.initUser(it)
-        }
+        if (view == null)
+            return
+        TravelModule.getUser(view!!.getViewContext())
+                ?.subscribe {
+                    view?.initUser(it)
+                }
     }
 
     override fun loadData(page: Int) {

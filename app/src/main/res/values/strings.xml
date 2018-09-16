@@ -22,6 +22,13 @@
     <string name="view_more">查看详情</string>
     <string name="open">open</string>
     <string name="close">close</string>
+    <string name="splash">源于热爱，所以相聚</string>
+    <string name="post_item_title">一位%1$s的%2$s邀请你一起去%3$s玩儿啦。</string>
+    <string name="nick_man">小哥哥</string>
+    <string name="nick_man_adj">帅气</string>
+    <string name="nick_woman">小姐姐</string>
+    <string name="nick_woman_adj">漂亮</string>
 
     <string name="picker_done">%1$d / %2$d</string>
+    <string name="splash_author">壁纸来源：@藏地情人</string>
 </resources>

@@ -92,6 +92,7 @@ class SendPostActivity : BaseActivity<SendPostPresenter>(), SendPostView {
                 ImagePicker.Builder().with(this)
                         .maxCount(9 - (mAdapter?.data?.size ?: 0))
                         .requestCode(200)
+                        .needCrop(false)
                         .build()
                         .start()
             }
@@ -100,6 +101,23 @@ class SendPostActivity : BaseActivity<SendPostPresenter>(), SendPostView {
 
     private fun sendPost() {
         //TODO 进行检查
+        if (getTitleText().isBlank()) {
+            showTipMessage("请写一个标题吧~~")
+            return
+        }
+        if (getDesText().isBlank()) {
+            showTipMessage("请输入你们的目的地呀~~")
+            return
+        }
+        if (getDepText().isBlank()) {
+            showTipMessage("请输入起点呀~~")
+            return
+        }
+
+        if (getContentText().isBlank()) {
+            showTipMessage("介绍一下你的行程吧~~")
+            return
+        }
         mPresenter?.sendPost()
     }
 

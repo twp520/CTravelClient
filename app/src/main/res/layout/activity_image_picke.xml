@@ -30,7 +30,7 @@
             android:layout_marginStart="@dimen/dp10"
             android:text="@string/picker_done"
             android:textColor="@color/withe"
-            android:textSize="@dimen/font_size_16" />
+            android:textSize="@dimen/font_size_12" />
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView

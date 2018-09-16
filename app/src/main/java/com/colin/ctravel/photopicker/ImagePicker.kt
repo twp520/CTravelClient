@@ -15,25 +15,29 @@ class ImagePicker {
     private var requestCode = -1
     private var colorRes: Int = -1
     private var maxCount: Int = 9
+    private var needCrop: Boolean = false
 
-    constructor(activity: Activity, requestCode: Int, @ColorRes colorRes: Int, maxCount: Int) {
+    constructor(activity: Activity, requestCode: Int, @ColorRes colorRes: Int, maxCount: Int = 9, needCrop: Boolean = false) {
         this.activity = activity
         this.requestCode = requestCode
         this.colorRes = colorRes
         this.maxCount = maxCount
+        this.needCrop = needCrop
     }
 
-    constructor(fragment: Fragment, requestCode: Int, @ColorRes colorRes: Int, maxCount: Int) {
+    constructor(fragment: Fragment, requestCode: Int, @ColorRes colorRes: Int, maxCount: Int = 9, needCrop: Boolean = false) {
         this.fragment = fragment
         this.requestCode = requestCode
         this.colorRes = colorRes
         this.maxCount = maxCount
+        this.needCrop = needCrop
     }
 
     fun start() {
         if (activity != null) {
             val intent = Intent(activity, ImagePickerAct::class.java)
             intent.putExtra("maxCount", this.maxCount)
+            intent.putExtra("needCrop", this.needCrop)
             if (colorRes != -1) {
                 intent.putExtra("color", colorRes)
             }
@@ -44,6 +48,7 @@ class ImagePicker {
         if (fragment != null) {
             val intent = Intent(fragment?.activity, ImagePickerAct::class.java)
             intent.putExtra("maxCount", this.maxCount)
+            intent.putExtra("needCrop", this.needCrop)
             if (colorRes != -1) {
                 intent.putExtra("color", colorRes)
             }
@@ -61,7 +66,7 @@ class ImagePicker {
         private var requestCode = -1
         private var colorRes: Int = -1
         private var maxCount: Int = 9
-
+        private var needCrop: Boolean = false
 
         fun with(activity: Activity): Builder {
             this.activity = activity
@@ -83,6 +88,11 @@ class ImagePicker {
             return this
         }
 
+        fun needCrop(needCrop: Boolean): Builder {
+            this.needCrop = needCrop
+            return this
+        }
+
         /*fun themColor(colorRes: Int): Builder {
             this.colorRes = colorRes
             return this
@@ -90,9 +100,9 @@ class ImagePicker {
 
         fun build(): ImagePicker {
             return if (activity != null) {
-                ImagePicker(activity!!, requestCode, colorRes, maxCount)
+                ImagePicker(activity!!, requestCode, colorRes, maxCount, needCrop)
             } else {
-                ImagePicker(fragment!!, requestCode, colorRes, maxCount)
+                ImagePicker(fragment!!, requestCode, colorRes, maxCount, needCrop)
             }
         }
     }
