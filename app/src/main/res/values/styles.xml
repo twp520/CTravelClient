@@ -113,7 +113,10 @@
         <item name="android:layout_height">match_parent</item>
     </style>
 
-    <style name="spinnerItemStyle">
-
+    <style name="cloudStyle">
+        <item name="android:layout_width">@dimen/dp20</item>
+        <item name="android:layout_height">@dimen/dp20</item>
+        <item name="android:src">@drawable/icon_cloud</item>
+        <item name="android:layout_gravity">center_vertical|end</item>
     </style>
 </resources>

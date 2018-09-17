@@ -5,6 +5,7 @@ import android.animation.Animator
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.view.WindowManager
 import com.colin.ctravel.R
 import com.colin.ctravel.module.TravelModule
 import com.colin.ctravel.util.createOrExistsDir
@@ -18,6 +19,7 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         setContentView(R.layout.activity_splash)
         //创建文件夹
         val permission = RxPermissions(this)

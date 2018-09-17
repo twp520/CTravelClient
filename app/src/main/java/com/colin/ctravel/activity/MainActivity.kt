@@ -72,25 +72,46 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView {
     override fun initUser(user: User) {
         val icon = main_nav.getHeaderView(0).findViewById<ImageView>(R.id.nav_head_icon)
         val nickname = main_nav.getHeaderView(0).findViewById<TextView>(R.id.nav_head_name)
-
+        val account = main_nav.getHeaderView(0).findViewById<TextView>(R.id.nav_head_account)
+        account.text = user.account
         nickname.text = user.nickname
-        if (user.gender != 0) {
-            nickname.setCompoundDrawablesWithIntrinsicBounds(getDrawable(R.drawable.gender_female), null, null, null)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                nickname.compoundDrawableTintList = ColorStateList.valueOf(getColor(R.color.colorAccent))
+        val d = when (user.gender) {
+            0 -> {
+                getDrawable(R.drawable.gender_male)
+            }
+            1 -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    nickname.compoundDrawableTintList = ColorStateList.valueOf(getColor(R.color.colorAccent))
+                }
+                getDrawable(R.drawable.gender_female)
+            }
+            2 -> {
+                getDrawable(R.drawable.icon_et)
+            }
+            else -> {
+                getDrawable(R.drawable.icon_et)
             }
         }
+        nickname.setCompoundDrawablesWithIntrinsicBounds(d, null, null, null)
         if (user.fromWx) {
             GlideApp.with(this).load(user.headUrl).into(icon)
         } else {
             //TODO 设置默认头像
-            GlideApp.with(this).load(R.drawable.logo).into(icon)
+            if (user.headUrl.isBlank()) {
+                GlideApp.with(this).load(R.drawable.logo).into(icon)
+            } else {
+                GlideApp.with(this).load(user.headUrl).into(icon)
+            }
         }
     }
 
     override fun refreshList(data: MutableList<PostInfo>) {
         mAdapter?.replaceData(data)
         main_refresh.finishRefresh(1000, true)
+    }
+
+    override fun refreshFail() {
+        main_refresh.finishRefresh(false)
     }
 
     override fun getSnackbarView(): View {

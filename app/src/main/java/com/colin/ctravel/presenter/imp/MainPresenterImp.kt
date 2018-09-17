@@ -15,9 +15,11 @@ class MainPresenterImp(view: MainView) : BasePresenterImp<MainView>(view), MainP
         if (view == null)
             return
         TravelModule.getUser(view!!.getViewContext())
-                ?.subscribe {
+                ?.subscribe({
                     view?.initUser(it)
-                }
+                }, {
+                    view?.showNetErrorMsg(it)
+                })
     }
 
     override fun loadData(page: Int) {
@@ -34,6 +36,7 @@ class MainPresenterImp(view: MainView) : BasePresenterImp<MainView>(view), MainP
 
                 }, {
                     view?.dismissLoading()
+                    view?.refreshFail()
                     view?.showNetErrorMsg(it)
                 })
     }

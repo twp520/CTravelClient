@@ -10,6 +10,7 @@ import com.colin.ctravel.presenter.LoginPresenter
 import com.colin.ctravel.presenter.imp.LoginPresenterImp
 import com.colin.ctravel.util.jumpActivity
 import com.colin.ctravel.view.LoginView
+import com.colin.ctravel.widget.MyLoadingDialog
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : BaseActivity<LoginPresenter>(), LoginView {

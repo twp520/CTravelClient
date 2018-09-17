@@ -5,7 +5,7 @@
     <string name="hint_username">请输入手机号码</string>
     <string name="hint_pwd">请输入密码</string>
     <string name="login_title">登陆</string>
-    <string name="login">Login</string>
+    <string name="login">登陆</string>
     <string name="loginWX">微信登陆</string>
     <string name="register">注册</string>
     <string name="login_welcome">Welcome Back,</string>

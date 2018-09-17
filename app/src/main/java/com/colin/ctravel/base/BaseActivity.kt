@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import com.colin.ctravel.R
 import com.colin.ctravel.net.ApiException
+import com.colin.ctravel.widget.MyLoadingDialog
 import kotlinx.android.synthetic.main.base_toolbar.*
 import retrofit2.HttpException
 
@@ -20,6 +21,7 @@ import retrofit2.HttpException
 abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView {
 
     var mPresenter: P? = null
+    private var loadingDialog: MyLoadingDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,12 +65,17 @@ abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView {
 
     abstract fun createPresenter(): P?
 
+
     override fun showLoading() {
         //TODO not
+        loadingDialog = MyLoadingDialog()
+        loadingDialog?.show(supportFragmentManager, "loading")
+
     }
 
     override fun dismissLoading() {
         //TODO not
+        loadingDialog?.dismiss()
     }
 
     override fun showTipMessage(msg: String) {

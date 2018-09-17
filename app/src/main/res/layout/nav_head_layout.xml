@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="300dp"
-    android:background="@drawable/bg"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingEnd="@dimen/dp16"
+    android:paddingStart="@dimen/dp16">
 
     <ImageView
         android:id="@+id/nav_head_icon"
@@ -19,13 +19,22 @@
         android:id="@+id/nav_head_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp10"
+        android:layout_marginTop="@dimen/dp15"
         android:drawablePadding="@dimen/dp10"
-        android:drawableStart="@drawable/gender_male"
         android:gravity="center"
         android:textColor="@color/black"
         android:textSize="@dimen/font_size_16"
         tools:text="藏地情人" />
 
+    <TextView
+        android:id="@+id/nav_head_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp15"
+        android:drawablePadding="@dimen/dp10"
+        android:gravity="center"
+        android:textColor="@color/font_black"
+        android:textSize="@dimen/font_size_14"
+        tools:text="藏地情人" />
 
 </LinearLayout>
