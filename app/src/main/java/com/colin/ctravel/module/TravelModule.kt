@@ -53,6 +53,21 @@ object TravelModule {
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
+    fun register(account: String, pwd: String, nickname: String, gender: Int): Observable<User> {
+        val map = hashMapOf<String, Any>()
+        map["account"] = account
+        map["passworld"] = pwd
+        map["nickname"] = nickname
+        map["headUrl"] = ""//TODO 设置一个默认头像链接
+        map["gender"] = gender
+        map["fromWx"] = false
+        return BuildAPI.getAPISevers()
+                .register(map)
+                .map(HandResultFunc())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
     /**
      * 获取所有的帖子
      * @return 帖子列表
@@ -125,19 +140,18 @@ object TravelModule {
      * 缓存用户信息
      * @param  user 用户信息
      */
-    fun saveUser(user: User, context: Context) {
+    fun saveUser(user: User, context: Context): Observable<Long> {
         cacheMap["user"] = user
         //固化用户信息
-        Observable.create<Long> {
+        SPUtils.getInstance().put("token", user.token)
+        SPUtils.getInstance().put("uid", user.id)
+        return Observable.create<Long> {
             val row = AppDataBase.getInstance(context).userDao().insertUser(user)
             if (row == 1L) {
                 it.onNext(row)
                 it.onComplete()
             } else it.onError(NullPointerException("数据库插入异常"))
-        }.subscribeOn(Schedulers.io())
-                .subscribe()
-        SPUtils.getInstance().put("token", user.token)
-        SPUtils.getInstance().put("uid", user.id)
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
     /**

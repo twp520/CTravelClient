@@ -1,19 +1,22 @@
 package com.colin.ctravel.activity
 
-import android.Manifest
+import android.support.v4.content.ContextCompat
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
+import android.view.WindowManager
 import com.colin.ctravel.R
 import com.colin.ctravel.base.BaseActivity
 import com.colin.ctravel.presenter.LoginPresenter
 import com.colin.ctravel.presenter.imp.LoginPresenterImp
-import com.colin.ctravel.util.createOrExistsDir
 import com.colin.ctravel.util.jumpActivity
-import com.colin.ctravel.util.photoCompressDirPath
 import com.colin.ctravel.view.LoginView
-import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.activity_login.*
-import java.io.File
 
 class LoginActivity : BaseActivity<LoginPresenter>(), LoginView {
+
+    override fun beforeSetContentView() {
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+    }
 
     override fun setContentViewId(): Int {
         return R.layout.activity_login
@@ -25,18 +28,24 @@ class LoginActivity : BaseActivity<LoginPresenter>(), LoginView {
 
     override fun initView() {
         supportActionBar?.title = getString(R.string.login_title)
-        //创建文件夹
-        val permission = RxPermissions(this)
-        permission.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .subscribe {
-                    if (it) {
-                        val photoCompress = File(photoCompressDirPath)
-                        createOrExistsDir(photoCompress)//创建压缩缓存文件夹
-                    }
-                }
         login_btn_account?.setOnClickListener { _ ->
             //进行登陆检查
             login()
+        }
+        login_edit_account?.setOnFocusChangeListener { _, _ ->
+            login_input_account?.error = ""
+        }
+        login_edit_pwd?.setOnFocusChangeListener { _, _ ->
+            login_input_pwd?.error = ""
+        }
+
+        val builder = SpannableStringBuilder(getString(R.string.login_no_account))
+        builder.setSpan(ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorPrimary)),
+                4, builder.length, SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE)
+        login_btn_register.text = builder
+        login_btn_register.setOnClickListener {
+            //TODO 跳转到注册页面
+            jumpActivity(RegisterActivity::class.java)
         }
     }
 
@@ -48,7 +57,7 @@ class LoginActivity : BaseActivity<LoginPresenter>(), LoginView {
             return
         }
         if (pwd.isBlank()) {
-            login_input_account?.error = "密码为空"
+            login_input_pwd?.error = "密码为空"
             return
         }
         //登陆

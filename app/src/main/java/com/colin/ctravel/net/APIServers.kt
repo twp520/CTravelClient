@@ -19,6 +19,9 @@ interface APIServers {
     @FormUrlEncoded
     fun login(@Field("account") account: String, @Field("passworld") pwd: String): Observable<BaseResultBean<User>>
 
+    @POST("/user/register")
+    @FormUrlEncoded
+    fun register(@FieldMap map: HashMap<String, Any>): Observable<BaseResultBean<User>>
 
     @GET("/post/getPosts")
     fun getAllPost(): Observable<BaseResultBean<MutableList<PostInfo>>>

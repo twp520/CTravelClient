@@ -15,11 +15,14 @@
         <item name="android:textSize">@dimen/font_size_16</item>
     </style>
 
+
     <style name="loginButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/dp45</item>
         <item name="android:textSize">@dimen/font_size_16</item>
         <item name="android:textColor">@color/withe</item>
+        <item name="android:layout_marginEnd">@dimen/dp16</item>
+        <item name="android:layout_marginStart">@dimen/dp16</item>
         <item name="android:background">@drawable/ripple_btn</item>
     </style>
 

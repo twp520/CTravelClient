@@ -7,20 +7,30 @@
     android:orientation="vertical"
     tools:context=".activity.LoginActivity">
 
-    <include layout="@layout/base_toolbar" />
-
     <ImageView
-        android:layout_width="@dimen/dp80"
-        android:layout_height="@dimen/dp80"
-        android:layout_gravity="center"
+        android:layout_width="@dimen/dp50"
+        android:layout_height="@dimen/dp50"
+        android:layout_marginStart="@dimen/dp16"
         android:layout_marginTop="@dimen/dp50"
         android:src="@drawable/logo"
         tools:ignore="ContentDescription" />
 
+    <TextView
+        style="@style/pagePadding.Warp"
+        android:layout_marginTop="@dimen/dp20"
+        android:text="@string/login_welcome"
+        android:textColor="@color/font_black"
+        android:textSize="@dimen/font_size_22" />
+
+    <TextView
+        style="@style/pagePadding.Warp"
+        android:text="@string/login_welcome_login"
+        android:textColor="@color/font_A4"
+        android:textSize="@dimen/font_size_16" />
+
     <android.support.design.widget.TextInputLayout
         android:id="@+id/login_input_account"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/pagePadding.MatchWarp"
         android:layout_marginTop="@dimen/dp50">
 
         <android.support.design.widget.TextInputEditText
@@ -32,8 +42,8 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/login_input_pwd"
+        style="@style/pagePadding.MatchWarp"
         android:layout_marginTop="@dimen/dp15"
         app:passwordToggleEnabled="true">
 
@@ -50,13 +60,14 @@
         android:layout_marginTop="@dimen/dp50"
         android:text="@string/login" />
 
-    <Button
-        style="@style/loginButton"
-        android:layout_marginTop="@dimen/dp10"
-        android:text="@string/loginWX" />
-
-    <Button
-        style="@style/loginButton"
-        android:layout_marginTop="@dimen/dp10"
-        android:text="@string/register" />
+    <TextView
+        android:id="@+id/login_btn_register"
+        style="@style/pagePadding.Warp"
+        android:layout_marginTop="@dimen/dp50"
+        android:textColor="@color/font_A4"
+        android:textSize="@dimen/font_size_14" />
+    <!--    <Button
+            style="@style/loginButton"
+            android:layout_marginTop="@dimen/dp10"
+            android:text="@string/register" />-->
 </LinearLayout>

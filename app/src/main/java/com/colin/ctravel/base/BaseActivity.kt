@@ -23,6 +23,7 @@ abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        beforeSetContentView()
         setContentView(setContentViewId())
         mPresenter = createPresenter()
         setSupportActionBar(base_toolbar)
@@ -50,6 +51,10 @@ abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView {
     }
 
     protected open fun onMenuClick(menuItem: MenuItem) {
+
+    }
+
+    open fun beforeSetContentView() {
 
     }
 

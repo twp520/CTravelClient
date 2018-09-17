@@ -7,9 +7,64 @@
     android:orientation="vertical"
     tools:context=".activity.RegisterActivity">
 
-    <include layout="@layout/base_toolbar" />
+    <ImageView
+        android:layout_width="@dimen/dp50"
+        android:layout_height="@dimen/dp50"
+        android:layout_marginStart="@dimen/dp16"
+        android:layout_marginTop="@dimen/dp50"
+        android:src="@drawable/logo"
+        tools:ignore="ContentDescription" />
 
+    <TextView
+        style="@style/pagePadding.Warp"
+        android:layout_marginTop="@dimen/dp20"
+        android:text="@string/register_welcome"
+        android:textColor="@color/font_black"
+        android:textSize="@dimen/font_size_22" />
 
+    <!-- 用户名 -->
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/register_input_account"
+        style="@style/pagePadding.MatchWarp"
+        android:layout_marginTop="@dimen/dp50">
 
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/register_edit_account"
+            style="@style/loginEdit"
+            android:hint="@string/hint_username"
+            android:inputType="number"
+            android:maxLength="11" />
+    </android.support.design.widget.TextInputLayout>
 
+    <!-- 昵称 -->
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/register_input_nickname"
+        style="@style/pagePadding.MatchWarp"
+        android:layout_marginTop="@dimen/dp10">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/register_edit_nickname"
+            style="@style/loginEdit"
+            android:hint="@string/hint_nickname" />
+    </android.support.design.widget.TextInputLayout>
+
+    <!-- 密码-->
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/register_input_pwd"
+        style="@style/pagePadding.MatchWarp"
+        android:layout_marginTop="@dimen/dp10"
+        app:passwordToggleEnabled="true">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/register_edit_pwd"
+            style="@style/loginEdit"
+            android:hint="@string/hint_pwd"
+            android:inputType="textPassword" />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/register_btn"
+        style="@style/loginButton"
+        android:layout_marginTop="@dimen/dp50"
+        android:text="@string/register" />
 </LinearLayout>
