@@ -119,4 +119,8 @@
         <item name="android:src">@drawable/icon_cloud</item>
         <item name="android:layout_gravity">center_vertical|end</item>
     </style>
+
+    <style name="postDetailTitle">
+        <item name="android:textSize">@dimen/font_size_22</item>
+    </style>
 </resources>

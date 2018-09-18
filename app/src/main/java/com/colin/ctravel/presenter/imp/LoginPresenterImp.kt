@@ -17,19 +17,16 @@ class LoginPresenterImp(view: LoginView) : BasePresenterImp<LoginView>(view), Lo
         }
         view?.showLoading()
         val disposable = TravelModule.login(account, pwd)
-                .subscribe({
-                    //保存用户信息
+                .flatMap {
                     TravelModule.saveUser(it, view!!.getViewContext())
-                            .subscribe({
-                                view?.dismissLoading()
-                                view?.loginSuccess()
-                            }, {
-                                it.printStackTrace()
-                                view?.showNetErrorMsg(it)
-                            })
+                }
+                .subscribe({ _ ->
+                    view?.dismissLoading()
+                    view?.loginSuccess()
                 }, {
                     view?.dismissLoading()
                     view?.showNetErrorMsg(it)
+                    it.printStackTrace()
                 })
         RxNetLife.add(view?.getNetKey(), disposable)
     }

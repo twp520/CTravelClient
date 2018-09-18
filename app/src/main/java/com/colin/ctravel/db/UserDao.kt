@@ -3,6 +3,7 @@ package com.colin.ctravel.db
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
+import android.arch.persistence.room.Update
 import com.colin.ctravel.bean.User
 
 @Dao
@@ -13,5 +14,8 @@ interface UserDao {
 
 
     @Query("select * from t_user where id=:userId")
-    fun getLoginUser(userId: Int): User
+    fun selectUserById(userId: Int): User?
+
+    @Update
+    fun updateUser(user: User): Int
 }

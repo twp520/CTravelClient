@@ -1,5 +1,7 @@
 package com.colin.ctravel.activity
 
+import android.app.Activity
+import android.content.Intent
 import android.support.v4.content.ContextCompat
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
@@ -10,7 +12,6 @@ import com.colin.ctravel.presenter.LoginPresenter
 import com.colin.ctravel.presenter.imp.LoginPresenterImp
 import com.colin.ctravel.util.jumpActivity
 import com.colin.ctravel.view.LoginView
-import com.colin.ctravel.widget.MyLoadingDialog
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : BaseActivity<LoginPresenter>(), LoginView {
@@ -42,11 +43,12 @@ class LoginActivity : BaseActivity<LoginPresenter>(), LoginView {
 
         val builder = SpannableStringBuilder(getString(R.string.login_no_account))
         builder.setSpan(ForegroundColorSpan(ContextCompat.getColor(this, R.color.colorPrimary)),
-                4, builder.length, SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE)
+                5, builder.length, SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE)
         login_btn_register.text = builder
         login_btn_register.setOnClickListener {
             //TODO 跳转到注册页面
-            jumpActivity(RegisterActivity::class.java)
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivityForResult(intent, 200)
         }
     }
 
@@ -68,5 +70,12 @@ class LoginActivity : BaseActivity<LoginPresenter>(), LoginView {
     override fun loginSuccess() {
         jumpActivity(MainActivity::class.java, null)
         finish()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 200 && resultCode == Activity.RESULT_OK) {
+            loginSuccess()
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }

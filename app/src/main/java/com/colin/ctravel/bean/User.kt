@@ -1,8 +1,10 @@
 package com.colin.ctravel.bean
 
 import android.arch.persistence.room.Entity
+import android.arch.persistence.room.Ignore
 import android.os.Parcel
 import android.os.Parcelable
+import android.support.annotation.Nullable
 
 /**
  *create by colin
@@ -10,10 +12,12 @@ import android.os.Parcelable
 @Entity(tableName = "t_user", primaryKeys = ["id"])
 data class User(var id: Int = 0) : Parcelable {
 
+    @Ignore constructor() : this(0)
 
     var account: String = ""
     var nickname: String = ""
     var gender: Int = 0
+    @Nullable
     var headUrl: String = ""
     var fromWx: Boolean = false
     var token: String = ""

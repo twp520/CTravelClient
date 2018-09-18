@@ -45,12 +45,10 @@ object TravelModule {
      * @return 用户信息
      */
     fun login(account: String, pwd: String): Observable<User> {
-
         return BuildAPI.getAPISevers()
                 .login(account, pwd)
                 .map(HandResultFunc())
                 .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
     }
 
     fun register(account: String, pwd: String, nickname: String, gender: Int): Observable<User> {
@@ -140,17 +138,25 @@ object TravelModule {
      * 缓存用户信息
      * @param  user 用户信息
      */
-    fun saveUser(user: User, context: Context): Observable<Long> {
+    fun saveUser(user: User, context: Context): Observable<Int> {
         cacheMap["user"] = user
         //固化用户信息
         SPUtils.getInstance().put("token", user.token)
         SPUtils.getInstance().put("uid", user.id)
-        return Observable.create<Long> {
-            val row = AppDataBase.getInstance(context).userDao().insertUser(user)
-            if (row == 1L) {
+        return Observable.create<Int> {
+            val dao = AppDataBase.getInstance(context.applicationContext).userDao()
+            val dbUser = dao.selectUserById(user.id)
+            val row = if (dbUser != null) {
+                dao.updateUser(user)
+            } else {
+                dao.insertUser(user).toInt()
+            }
+            if (row != -1) {
                 it.onNext(row)
                 it.onComplete()
-            } else it.onError(NullPointerException("数据库插入异常"))
+            } else {
+                it.onError(NullPointerException("插入数据库异常"))
+            }
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
@@ -160,19 +166,23 @@ object TravelModule {
      * 如果没有则返回NULL
      * @return 用户信息
      */
-    fun getUser(context: Context): Observable<User>? {
+    fun getUser(context: Context): Observable<User?>? {
         val user = cacheMap["user"]
         if (user != null && user is User) {
             return Observable.just(user)
         }
         val uid = getUserId()
         if (uid != -1) {
-            return Observable.create<User> {
+            return Observable.create<User?> {
                 val dbUser = AppDataBase.getInstance(context)
                         .userDao()
-                        .getLoginUser(uid)
-                it.onNext(dbUser)
-                it.onComplete()
+                        .selectUserById(uid)
+                if (dbUser != null) {
+                    it.onNext(dbUser)
+                    it.onComplete()
+                } else {
+                    it.onError(NullPointerException("数据库查询为空"))
+                }
             }.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
         }

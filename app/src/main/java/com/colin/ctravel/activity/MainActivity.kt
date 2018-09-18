@@ -2,6 +2,7 @@ package com.colin.ctravel.activity
 
 import android.content.res.ColorStateList
 import android.os.Build
+import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.Gravity
@@ -65,6 +66,15 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView {
         main_refresh.setOnRefreshListener {
             //刷新数据
             mPresenter?.loadData(1)
+        }
+        mAdapter?.setOnItemClickListener { _, _, position ->
+            //TODO 跳转到详情页面
+            val temp = mAdapter?.data?.get(position)
+            if (temp != null) {
+                val bundle = Bundle()
+                bundle.putParcelable("post", temp)
+                jumpActivity(PostDetailAct::class.java, bundle)
+            }
         }
     }
 

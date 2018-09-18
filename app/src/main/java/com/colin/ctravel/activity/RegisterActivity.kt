@@ -1,5 +1,6 @@
 package com.colin.ctravel.activity
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.view.WindowManager
 import com.colin.ctravel.R
@@ -8,7 +9,6 @@ import com.colin.ctravel.base.BasePresenter
 import com.colin.ctravel.module.TravelModule
 import com.colin.ctravel.net.RxNetLife
 import com.colin.ctravel.util.LOG_TAG
-import com.colin.ctravel.util.jumpActivity
 import com.socks.library.KLog
 import kotlinx.android.synthetic.main.activity_register.*
 
@@ -71,15 +71,19 @@ class RegisterActivity : BaseActivity<BasePresenter>() {
 
     private fun register(account: String, nickname: String, pwd: String, gender: Int) {
         val disposable = TravelModule.register(account, pwd, nickname, gender)
-                .subscribe({
-                    //保存用户信息
-                    dismissLoading()
+                .flatMap {
                     TravelModule.saveUser(it, getViewContext())
-                    jumpActivity(MainActivity::class.java)
+                }
+                .subscribe({
+                    dismissLoading()
+                    //注册成功
+                    KLog.e(LOG_TAG, "注册成功")
+                    setResult(Activity.RESULT_OK)
                     finish()
                 }, {
-                    dismissLoading()
+                    it.printStackTrace()
                     showNetErrorMsg(it)
+                    it.printStackTrace()
                 })
         RxNetLife.add(getNetKey(), disposable)
     }
