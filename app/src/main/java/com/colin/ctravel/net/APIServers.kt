@@ -15,18 +15,18 @@ interface APIServers {
     fun test(): Observable<BaseResultBean<String>>
 
 
-    @POST("/user/login")
+    @POST("user/login")
     @FormUrlEncoded
     fun login(@Field("account") account: String, @Field("passworld") pwd: String): Observable<BaseResultBean<User>>
 
-    @POST("/user/register")
+    @POST("user/register")
     @FormUrlEncoded
     fun register(@FieldMap map: HashMap<String, Any>): Observable<BaseResultBean<User>>
 
-    @GET("/post/getPosts")
+    @GET("post/getPosts")
     fun getAllPost(): Observable<BaseResultBean<MutableList<PostInfo>>>
 
-    @POST("/post/sendPost")
+    @POST("post/sendPost")
     @FormUrlEncoded
     fun sendPost(@FieldMap map: HashMap<String, Any>): Observable<BaseResultBean<String>>
 }

@@ -16,7 +16,7 @@
 
     <!-- post页面 -->
     <string name="hint_post_title">写个标题吧</string>
-    <string name="hint_post_content">说点什么吧</string>
+    <string name="hint_post_content">说点什么吧（别忘了留个联系方式）</string>
     <string name="hint_post_des">想去的地儿</string>
     <string name="hint_post_dep">出发的地儿</string>
     <string name="post_title">发布行程</string>
