@@ -1,8 +1,7 @@
 package com.colin.ctravel.activity
 
-import android.content.res.ColorStateList
-import android.os.Build
 import android.os.Bundle
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.Gravity
@@ -38,6 +37,7 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView {
 
     override fun initView() {
         //设置左边按钮
+
         initActionBar()
         initRecyclerView()
         mPresenter?.init()
@@ -67,17 +67,24 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView {
             //刷新数据
             mPresenter?.loadData(1)
         }
-        mAdapter?.setOnItemClickListener { _, _, position ->
+        mAdapter?.setOnItemClickListener { _, itemView, position ->
             //TODO 跳转到详情页面
             val temp = mAdapter?.data?.get(position)
             if (temp != null) {
-                val bundle = Bundle()
-                bundle.putParcelable("post", temp)
-                jumpActivity(PostDetailAct::class.java, bundle)
+                val shareView = itemView.findViewById<ImageView>(R.id.item_post_photo)
+                gotoDetail(shareView, temp)
             }
         }
     }
 
+    private fun gotoDetail(shareView: View, temp: PostInfo) {
+        val bundle = Bundle()
+        bundle.putParcelable("post", temp)
+        val optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+                shareView,
+                getString(R.string.t_post_list_to_detail))
+        jumpActivity(PostDetailAct::class.java, bundle)
+    }
 
     override fun initUser(user: User) {
         val icon = main_nav.getHeaderView(0).findViewById<ImageView>(R.id.nav_head_icon)
@@ -86,21 +93,10 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView {
         account.text = user.account
         nickname.text = user.nickname
         val d = when (user.gender) {
-            0 -> {
-                getDrawable(R.drawable.gender_male)
-            }
-            1 -> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    nickname.compoundDrawableTintList = ColorStateList.valueOf(getColor(R.color.colorAccent))
-                }
-                getDrawable(R.drawable.gender_female)
-            }
-            2 -> {
-                getDrawable(R.drawable.icon_et)
-            }
-            else -> {
-                getDrawable(R.drawable.icon_et)
-            }
+            0 -> getDrawable(R.drawable.gender_male)
+            1 -> getDrawable(R.drawable.gender_female)
+            2 -> getDrawable(R.drawable.icon_et)
+            else -> getDrawable(R.drawable.icon_et)
         }
         nickname.setCompoundDrawablesWithIntrinsicBounds(d, null, null, null)
         if (user.fromWx) {

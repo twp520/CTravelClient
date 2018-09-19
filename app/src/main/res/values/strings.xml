@@ -34,6 +34,14 @@
     <string name="nick_woman">小姐姐</string>
     <string name="nick_woman_adj">漂亮</string>
 
+    <string name="detail_apply">报名</string>
+    <string name="detail_tv_des">目的地点 %1$s</string>
+    <string name="detail_tv_dep">出发地点 %1$s</string>
+    <string name="detail_tv_startData">出发时间 %1$s</string>
+    <string name="detail_participant">参与者</string>
+    <string name="sorry">参与者和评论功能正在开发中…</string>
+    <string name="t_post_list_to_detail">ivDetailPhoto</string>
+
     <string name="picker_done">%1$d / %2$d</string>
     <string name="splash_author">壁纸来源：@藏地情人</string>
 </resources>

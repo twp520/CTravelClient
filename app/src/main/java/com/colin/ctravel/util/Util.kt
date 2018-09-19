@@ -19,14 +19,15 @@ fun Context.toast(text: String) {
     Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
 }
 
-fun Context.jumpActivity(clazz: Class<*>, args: Bundle? = null) {
+fun Context.jumpActivity(clazz: Class<*>, args: Bundle? = null, options: Bundle? = null) {
     val intent = Intent(this, clazz)
     args?.let {
         intent.putExtras(it)
     }
-    startActivity(intent)
+    if (options == null)
+        startActivity(intent)
+    else startActivity(intent, options)
 }
-
 
 
 fun createOrExistsDir(file: File?): Boolean {
