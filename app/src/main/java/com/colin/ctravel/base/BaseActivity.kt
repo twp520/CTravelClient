@@ -28,11 +28,11 @@ abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView {
         beforeSetContentView()
         setContentView(setContentViewId())
         mPresenter = createPresenter()
-        setSupportActionBar(base_toolbar)
         initView()
     }
 
     fun setToolbarTitle(titleRes: Int) {
+        setSupportActionBar(base_toolbar)
         supportActionBar?.setTitle(titleRes)
     }
 

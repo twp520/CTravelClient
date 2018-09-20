@@ -37,15 +37,15 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView {
 
     override fun initView() {
         //设置左边按钮
-
         initActionBar()
         initRecyclerView()
         mPresenter?.init()
     }
 
     private fun initActionBar() {
-        supportActionBar?.setDisplayShowHomeEnabled(true)
+        setToolbarTitle(R.string.app_name)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
         val toggle = ActionBarDrawerToggle(this, main_drawer, base_toolbar, R.string.open, R.string.close)
         toggle.syncState()
         main_drawer.addDrawerListener(toggle)
@@ -83,7 +83,7 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView {
         val optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
                 shareView,
                 getString(R.string.t_post_list_to_detail))
-        jumpActivity(PostDetailAct::class.java, bundle,optionsCompat.toBundle())
+        jumpActivity(PostDetailAct::class.java, bundle, optionsCompat.toBundle())
     }
 
     override fun initUser(user: User) {

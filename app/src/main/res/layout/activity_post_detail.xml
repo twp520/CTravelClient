@@ -50,6 +50,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/detail_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -57,20 +58,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="@dimen/dp16">
 
             <!-- 用户信息 -->
-            <android.support.v4.view.ViewPager
-                android:id="@+id/detail_vp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.6" />
-
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="@dimen/dp16">
+                android:layout_height="match_parent">
 
                 <ImageView
                     android:id="@+id/detail_user_head"
@@ -100,61 +94,65 @@
                     android:text="@string/detail_apply"
                     android:textColor="@color/withe"
                     android:textSize="@dimen/font_size_16" />
+            </RelativeLayout>
+            <!-- 行程信息 -->
+            <TextView
+                android:id="@+id/detail_info_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp10"
+                android:textColor="@color/black"
+                android:textSize="@dimen/font_size_19"
+                tools:text="我是标题" />
 
-                <!-- 行程信息 -->
-                <TextView
-                    android:id="@+id/detail_info_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/detail_user_head"
-                    android:layout_marginTop="@dimen/dp10"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/font_size_19"
-                    tools:text="我是标题" />
-
-                <TextView
-                    android:id="@+id/detail_info_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/detail_info_title"
-                    android:layout_marginTop="@dimen/dp10"
-                    android:textSize="@dimen/font_size_16"
-                    tools:text="一起我爱的发声阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿
+            <TextView
+                android:id="@+id/detail_info_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp10"
+                android:textSize="@dimen/font_size_16"
+                tools:text="一起我爱的发声阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿
 斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬阿斯蒂芬" />
 
-                <TextView
-                    android:id="@+id/detail_info_data"
-                    style="@style/detailInfoText"
-                    android:layout_below="@id/detail_info_content"
-                    android:drawableStart="@drawable/icon_date" />
+            <TextView
+                android:id="@+id/detail_info_data"
+                style="@style/detailInfoText"
+                android:drawableStart="@drawable/icon_date" />
 
-                <TextView
-                    android:id="@+id/detail_info_dep"
-                    style="@style/detailInfoText"
-                    android:layout_below="@id/detail_info_data"
-                    android:drawableStart="@drawable/icon_location" />
+            <TextView
+                android:id="@+id/detail_info_dep"
+                style="@style/detailInfoText"
+                android:drawableStart="@drawable/icon_location" />
 
-                <TextView
-                    android:id="@+id/detail_info_des"
-                    style="@style/detailInfoText"
-                    android:layout_below="@id/detail_info_dep"
-                    android:drawableStart="@drawable/icon_location" />
+            <TextView
+                android:id="@+id/detail_info_des"
+                style="@style/detailInfoText"
+                android:drawableStart="@drawable/icon_location" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/detail_info_des"
-                    android:layout_marginTop="@dimen/dp20"
-                    android:text="@string/detail_participant"
-                    android:textColor="@color/gray" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp20"
+                android:layout_marginTop="@dimen/dp20"
+                android:elevation="@dimen/dp05"
+                android:text="@string/detail_comment" />
+            <!-- 显示最新5条评论 -->
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/detail_comment_ten"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp10"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp200"
-                    android:layout_below="@id/detail_info_des"
-                    android:layout_marginTop="@dimen/dp50"
-                    android:text="@string/sorry" />
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/detail_comment_btn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp40"
+                android:background="@drawable/shape_text_send"
+                android:gravity="center_vertical"
+                android:paddingEnd="@dimen/dp08"
+                android:paddingStart="@dimen/dp08"
+                android:text="@string/detail_commit_edit_hint"
+                android:textColor="@color/font_black" />
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

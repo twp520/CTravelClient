@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="300dp"
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
     android:paddingEnd="@dimen/dp16"
     android:paddingStart="@dimen/dp16">
@@ -22,7 +23,7 @@
         android:layout_marginTop="@dimen/dp15"
         android:drawablePadding="@dimen/dp10"
         android:gravity="center"
-        android:textColor="@color/black"
+        android:textColor="@color/withe"
         android:textSize="@dimen/font_size_16"
         tools:text="藏地情人" />
 
@@ -33,7 +34,7 @@
         android:layout_marginTop="@dimen/dp15"
         android:drawablePadding="@dimen/dp10"
         android:gravity="center"
-        android:textColor="@color/font_black"
+        android:textColor="@color/withe"
         android:textSize="@dimen/font_size_14"
         tools:text="藏地情人" />
 
