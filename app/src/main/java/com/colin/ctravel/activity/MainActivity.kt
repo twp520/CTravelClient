@@ -83,7 +83,7 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView {
         val optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
                 shareView,
                 getString(R.string.t_post_list_to_detail))
-        jumpActivity(PostDetailAct::class.java, bundle)
+        jumpActivity(PostDetailAct::class.java, bundle,optionsCompat.toBundle())
     }
 
     override fun initUser(user: User) {

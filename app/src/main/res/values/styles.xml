@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:textColorPrimary">@color/withe</item>
+        <item name="android:editTextColor">@color/black</item>
     </style>
 
 

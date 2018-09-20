@@ -1,8 +1,8 @@
 package com.colin.ctravel.activity
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.support.v4.view.PagerAdapter
-import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -11,34 +11,30 @@ import com.colin.ctravel.base.BaseActivity
 import com.colin.ctravel.base.BasePresenter
 import com.colin.ctravel.bean.PostInfo
 import com.colin.ctravel.util.GlideApp
-import com.colin.ctravel.util.LOG_TAG
-import com.socks.library.KLog
-import kotlinx.android.synthetic.main.activity_post_detail_test.*
+import com.colin.ctravel.util.TimeUtils
+import kotlinx.android.synthetic.main.activity_post_detail.*
 import org.json.JSONArray
+import java.text.SimpleDateFormat
 
 class PostDetailAct : BaseActivity<BasePresenter>() {
     override fun setContentViewId(): Int {
-        return R.layout.activity_post_detail_test
+//        return R.layout.activity_post_detail_test
+        return R.layout.activity_post_detail
     }
 
     override fun createPresenter(): BasePresenter? {
         return null
     }
 
+    @SuppressLint("SimpleDateFormat")
     override fun initView() {
-        setSupportActionBar(detail_toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeButtonEnabled(true)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-//        detail_coll_tl.setContentScrimResource(R.color.colorPrimary)
-        detail_toolbar.setNavigationOnClickListener {
-            finish()
-        }
+        postponeEnterTransition()
+        initActionBar()
         intent.extras?.let {
             val post = it.getParcelable<PostInfo>("post")
-//            detail_coll_tl.title = "行程详情"
+            detail_coll_tl.title = "行程详情"
             //图片
-            val pageAdapter = MyPageAdapter(post.imgs, this)
+            /*val pageAdapter = MyPageAdapter(post.imgs, this)
             detail_vp.adapter = pageAdapter
             detail_vp.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrollStateChanged(state: Int) {
@@ -54,7 +50,15 @@ class PostDetailAct : BaseActivity<BasePresenter>() {
                     KLog.e(LOG_TAG, "当前view的高度 = ${pageAdapter.getItemView(position).height}")
                 }
 
-            })
+            })*/
+            if (post.imgs?.isNotEmpty() == true) {
+                val jsonArray = JSONArray(post.imgs)
+                GlideApp.with(this).load(jsonArray[0])
+                        .into(detail_photos)
+            } else {
+                GlideApp.with(this).load(R.drawable.item_def)
+                        .into(detail_photos)
+            }
             val user = post.user
             if (user != null) {
                 GlideApp.with(this).load(user.headUrl).into(detail_user_head)
@@ -63,13 +67,38 @@ class PostDetailAct : BaseActivity<BasePresenter>() {
             //行程信息
             detail_info_title.text = post.title
             detail_info_content.text = post.content
-            detail_info_data.text = getString(R.string.detail_tv_startData, post.startTime)
+            if (post.startTime != null) {
+                detail_info_data.text = getString(R.string.detail_tv_startData,
+                        TimeUtils.millis2String(post.startTime!!.toLong(), SimpleDateFormat("yyyy-mm-dd")))
+            } else {
+                detail_info_data.text = getString(R.string.detail_tv_startData, TimeUtils.getNowString())
+            }
             detail_info_dep.text = getString(R.string.detail_tv_dep, post.departure)
             detail_info_des.text = getString(R.string.detail_tv_des, post.destination)
+            startPostponedEnterTransition()
         }
     }
 
-    public class MyPageAdapter(imgs: String?, var context: Context) : PagerAdapter() {
+    private fun initActionBar() {
+        setSupportActionBar(detail_toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        detail_coll_tl.setContentScrimResource(R.color.colorPrimary)
+        detail_toolbar.setNavigationOnClickListener {
+            supportFinishAfterTransition()
+        }
+        //添加分享按钮
+        detail_toolbar.inflateMenu(R.menu.menu_post_detail)
+        detail_toolbar.setOnMenuItemClickListener { item ->
+            if (item.itemId == R.id.menu_detail_share) {
+                showTipMessage("分享还没想好")
+            }
+            return@setOnMenuItemClickListener true
+        }
+    }
+
+    class MyPageAdapter(imgs: String?, var context: Context) : PagerAdapter() {
 
         private var mViews: MutableList<ImageView> = mutableListOf()
         private var urls: MutableList<String> = mutableListOf()
