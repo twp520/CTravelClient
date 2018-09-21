@@ -1,6 +1,7 @@
 package com.colin.ctravel.net
 
 import com.colin.ctravel.base.BaseResultBean
+import com.colin.ctravel.bean.Comment
 import com.colin.ctravel.bean.PostInfo
 import com.colin.ctravel.bean.User
 import io.reactivex.Observable
@@ -11,7 +12,7 @@ import retrofit2.http.*
  */
 interface APIServers {
 
-    @GET("/user/test")
+    @GET("user/test")
     fun test(): Observable<BaseResultBean<String>>
 
 
@@ -29,4 +30,11 @@ interface APIServers {
     @POST("post/sendPost")
     @FormUrlEncoded
     fun sendPost(@FieldMap map: HashMap<String, Any>): Observable<BaseResultBean<String>>
+
+    @POST("post/commentPost")
+    @FormUrlEncoded
+    fun sendComment(@FieldMap map: HashMap<String, Any>): Observable<BaseResultBean<Comment>>
+
+    @GET("post/getCommentByPostId")
+    fun getCommentByPostId(@Query("postId") postId: Int): Observable<BaseResultBean<MutableList<Comment>>>
 }

@@ -4,11 +4,17 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp20" />
+
     <TextView
-        android:id="@+id/item_comment_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:lineSpacingMultiplier="1.5"
-        android:paddingBottom="@dimen/dp05" />
+        android:text="@string/comment_ruler"
+        android:textSize="@dimen/font_size_16" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp30" />
 </LinearLayout>

@@ -109,6 +109,7 @@ abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView {
                 throwable.printStackTrace()
             }
         }
+        throwable.printStackTrace()
     }
 
     override fun onDestroy() {

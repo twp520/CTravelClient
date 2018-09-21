@@ -3,6 +3,7 @@ package com.colin.ctravel.module
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
+import com.colin.ctravel.bean.Comment
 import com.colin.ctravel.bean.PostInfo
 import com.colin.ctravel.bean.User
 import com.colin.ctravel.db.AppDataBase
@@ -126,6 +127,11 @@ object TravelModule {
         return liveData
     }
 
+    /**
+     * 发送post
+     * @param map 参数集合
+     * @return 结果
+     */
     fun sendPost(map: HashMap<String, Any>): Observable<String> {
         return BuildAPI.getAPISevers().sendPost(map)
                 .map(HandResultFunc())
@@ -133,6 +139,36 @@ object TravelModule {
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
+    /**
+     * 发送评论
+     * @param content 评论内容
+     * @param postId 被评论的post 的id
+     * @return 当前评论实体类
+     */
+    fun sendComment(content: String, postId: Int): Observable<Comment> {
+        val map = hashMapOf<String, Any>()
+        map["content"] = content
+        map["postId"] = postId
+        map["atUid"] = -1
+        return BuildAPI.getAPISevers()
+                .sendComment(map)
+                .map(HandResultFunc())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    /**
+     * 获得一个帖子的评论
+     * @param postId  帖子 ID
+     * @return 评论列表
+     */
+    fun getPostComment(postId: Int): Observable<MutableList<Comment>> {
+        return BuildAPI.getAPISevers()
+                .getCommentByPostId(postId)
+                .map(HandResultFunc())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+    }
 
     /**
      * 缓存用户信息

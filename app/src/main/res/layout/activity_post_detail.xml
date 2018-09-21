@@ -141,17 +141,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp10"
+                android:nestedScrollingEnabled="false"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
             <TextView
                 android:id="@+id/detail_comment_btn"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp40"
+                android:layout_marginTop="@dimen/dp15"
                 android:background="@drawable/shape_text_send"
                 android:gravity="center_vertical"
                 android:paddingEnd="@dimen/dp08"
                 android:paddingStart="@dimen/dp08"
-                android:text="@string/detail_commit_edit_hint"
+                android:text="@string/detail_comment_tv"
                 android:textColor="@color/font_black" />
 
         </LinearLayout>
