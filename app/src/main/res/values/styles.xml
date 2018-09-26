@@ -6,10 +6,14 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
-        <item name="android:textColorPrimary">@color/withe</item>
+        <!--<item name="android:textColorPrimary">@color/withe</item>-->
         <item name="android:editTextColor">@color/black</item>
     </style>
 
+
+    <style name="myActionBarTitle" parent="Base.TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/withe</item>
+    </style>
 
     <style name="loginEdit">
         <item name="android:layout_width">match_parent</item>
@@ -124,7 +128,7 @@
     </style>
 
     <style name="postDetailTitle">
-        <item name="android:textSize">@dimen/font_size_22</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:textColor">@color/withe</item>
     </style>
 

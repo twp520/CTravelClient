@@ -25,7 +25,7 @@
         </provider>
 
         <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.LoginActivity"/>
+        <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.SendPostActivity" />
         <activity android:name=".photopicker.ImagePickerAct" />
         <activity android:name=".photopicker.LargeActivity" />
@@ -37,7 +37,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.RegisterActivity"/>
+        <activity android:name=".activity.RegisterActivity" />
+        <activity android:name=".activity.UserProfileAct"></activity>
     </application>
 
 </manifest>

@@ -11,7 +11,5 @@ interface MainView : BaseView {
 
     fun initUser(user: User)
 
-    fun refreshList(data: MutableList<PostInfo>)
-
-    fun refreshFail()
+    fun initPost()
 }

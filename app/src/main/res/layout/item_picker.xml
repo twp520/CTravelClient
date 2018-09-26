@@ -10,8 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp120"
         android:contentDescription="@string/app_name"
-        android:scaleType="centerCrop"
-        tools:src="@drawable/bg" />
+        android:scaleType="centerCrop" />
 
     <CheckBox
         android:id="@+id/item_picker_ckb"

@@ -23,25 +23,8 @@ class MainPresenterImp(view: MainView) : BasePresenterImp<MainView>(view), MainP
                     view?.showNetErrorMsg(it)
                     it.printStackTrace()
                 })
+        view?.initPost()
     }
 
-    override fun loadData(page: Int) {
-//        view?.showLoading()
-//        val tempData = mutableListOf<PostInfo>()
-      /*  for (i in 1..10) {
-            tempData.add(PostInfo(i))
-        }*/
-        TravelModule.getAllPost()
-                .subscribe({
-//                    view?.dismissLoading()
-//                    it.addAll(tempData)
-                    view?.refreshList(it)
 
-                }, {
-//                    view?.dismissLoading()
-                    view?.refreshFail()
-                    view?.showNetErrorMsg(it)
-                    it.printStackTrace()
-                })
-    }
 }

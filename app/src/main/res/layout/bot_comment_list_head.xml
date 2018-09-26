@@ -4,17 +4,20 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp20" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp30"
+        android:layout_marginTop="@dimen/dp20"
+        android:background="@drawable/shape_bg_gray_round"
+        android:lineSpacingMultiplier="1.6"
+        android:paddingBottom="@dimen/dp10"
+        android:paddingEnd="@dimen/dp08"
+        android:paddingStart="@dimen/dp08"
+        android:enabled="false"
+        android:paddingTop="@dimen/dp10"
         android:text="@string/comment_ruler"
         android:textSize="@dimen/font_size_16" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp30" />
 </LinearLayout>

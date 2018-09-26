@@ -1,14 +1,17 @@
 package com.colin.ctravel.activity
 
 import android.annotation.SuppressLint
-import android.content.Context
+import android.app.Activity
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.support.design.widget.CollapsingToolbarLayout
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.PagerAdapter
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.support.v7.graphics.Palette
+import android.view.*
 import android.widget.ImageView
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import com.colin.ctravel.R
 import com.colin.ctravel.adapter.CommentAdapter
 import com.colin.ctravel.base.BaseActivity
@@ -31,6 +34,10 @@ class PostDetailAct : BaseActivity<BasePresenter>() {
     private var commentBot: CommentBotSheet? = null
     private var fourAdapter: CommentAdapter? = null
 
+    override fun beforeSetContentView() {
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+    }
+
     override fun setContentViewId(): Int {
 //        return R.layout.activity_post_detail_test
         return R.layout.activity_post_detail
@@ -48,34 +55,21 @@ class PostDetailAct : BaseActivity<BasePresenter>() {
             val post = it.getParcelable<PostInfo>("post")
             detail_coll_tl.title = "行程详情"
             //图片
-            /*val pageAdapter = MyPageAdapter(post.imgs, this)
-            detail_vp.adapter = pageAdapter
-            detail_vp.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-                override fun onPageScrollStateChanged(state: Int) {
-
-                }
-
-                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-
-                }
-
-                override fun onPageSelected(position: Int) {
-                    KLog.e(LOG_TAG, "切换 position = $position")
-                    KLog.e(LOG_TAG, "当前view的高度 = ${pageAdapter.getItemView(position).height}")
-                }
-
-            })*/
-            if (post.imgs?.isNotEmpty() == true) {
+            val pageAdapter = MyPageAdapter(post.imgs, this)
+            detail_photo_vp.adapter = pageAdapter
+            /*if (post.imgs?.isNotEmpty() == true) {
                 val jsonArray = JSONArray(post.imgs)
                 GlideApp.with(this).load(jsonArray[0])
                         .into(detail_photos)
             } else {
                 GlideApp.with(this).load(R.drawable.item_def)
                         .into(detail_photos)
-            }
+            }*/
             val user = post.user
             if (user != null) {
-                GlideApp.with(this).load(user.headUrl).into(detail_user_head)
+                GlideApp.with(this).load(user.headUrl)
+                        .optionalCircleCrop()
+                        .into(detail_user_head)
                 detail_user_nickname.text = user.nickname
             }
             //行程信息
@@ -120,6 +114,10 @@ class PostDetailAct : BaseActivity<BasePresenter>() {
 
         commentBot?.setCommentListener { content ->
             KLog.e(LOG_TAG, "点击发送！！！")
+            if (content.isBlank()) {
+                showTipMessage("不能发送空白消息哦")
+                return@setCommentListener
+            }
             val disposable = TravelModule.sendComment(content, post.id)
                     .subscribe({
                         //发送成功
@@ -140,6 +138,15 @@ class PostDetailAct : BaseActivity<BasePresenter>() {
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         detail_coll_tl.setContentScrimResource(R.color.colorPrimary)
+        var statusBarHeight1 = -1
+        //获取status_bar_height资源的ID  
+        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+        if (resourceId > 0) {
+            statusBarHeight1 = resources.getDimensionPixelSize(resourceId)
+        }
+        val lp = detail_toolbar.layoutParams as CollapsingToolbarLayout.LayoutParams
+        lp.topMargin = statusBarHeight1
+        detail_toolbar.layoutParams = lp
         detail_toolbar.setNavigationOnClickListener {
             supportFinishAfterTransition()
         }
@@ -152,13 +159,14 @@ class PostDetailAct : BaseActivity<BasePresenter>() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.menu_detail_share) {
-            showTipMessage("分享还没想好")
+        when (item.itemId) {
+            R.id.menu_detail_share -> showTipMessage("分享还没想好")
+            R.id.menu_detail_like -> showTipMessage("收藏还没想好")
         }
         return true
     }
 
-    class MyPageAdapter(imgs: String?, var context: Context) : PagerAdapter() {
+    class MyPageAdapter(imgs: String?, var context: Activity) : PagerAdapter() {
 
         private var mViews: MutableList<ImageView> = mutableListOf()
         private var urls: MutableList<String> = mutableListOf()
@@ -186,20 +194,36 @@ class PostDetailAct : BaseActivity<BasePresenter>() {
             val imageView = mViews[position]
             val param = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             imageView.adjustViewBounds = true
-            GlideApp.with(context).load(urls[position])
-                    .optionalCenterCrop()
-                    .into(imageView)
+            val target = object : SimpleTarget<Bitmap>() {
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    imageView.setImageBitmap(resource)
+                    Palette.from(resource).generate {
+                        val lvs = it.lightVibrantSwatch
+                        val dvs = it.darkVibrantSwatch
+                        val dms = it.darkMutedSwatch
+                        val lms = it.lightMutedSwatch
+                        val color = when {
+                            dvs?.rgb != null -> dvs.rgb
+                            lvs?.rgb != null -> lvs.rgb
+                            dms?.rgb != null -> dms.rgb
+                            lms?.rgb != null -> lms.rgb
+                            else -> ContextCompat.getColor(context, R.color.colorPrimary)
+                        }
+                        imageView.setBackgroundColor(color)
+                    }
+                }
+            }
+            GlideApp.with(context)
+                    .asBitmap()
+                    .load(urls[position])
+                    .into(target)
             imageView.layoutParams = param
             container.addView(imageView)
             return imageView
         }
 
         override fun destroyItem(container: ViewGroup, position: Int, aobj: Any) {
-            container.removeViewAt(position)
-        }
-
-        fun getItemView(position: Int): View {
-            return mViews[position]
+            container.removeView(aobj as View)
         }
 
     }

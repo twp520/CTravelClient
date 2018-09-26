@@ -11,7 +11,6 @@
     <ImageView
         android:id="@+id/item_post_photo"
         style="@style/itemPostPhoto"
-        android:src="@drawable/bg"
         android:transitionName="@string/t_post_list_to_detail"
         tools:ignore="ContentDescription" />
 

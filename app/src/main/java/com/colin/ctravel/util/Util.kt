@@ -4,11 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
+import android.support.v4.app.Fragment
 import android.widget.Toast
 import java.io.File
 import java.io.IOException
-import java.nio.file.Files.exists
-import java.nio.file.Files.isDirectory
 
 
 const val LOG_TAG = "travel"
@@ -29,6 +28,15 @@ fun Context.jumpActivity(clazz: Class<*>, args: Bundle? = null, options: Bundle?
     else startActivity(intent, options)
 }
 
+fun Fragment.jumpActivity(clazz: Class<*>, args: Bundle? = null, options: Bundle? = null) {
+    val intent = Intent(activity, clazz)
+    args?.let {
+        intent.putExtras(it)
+    }
+    if (options == null)
+        startActivity(intent)
+    else startActivity(intent, options)
+}
 
 fun createOrExistsDir(file: File?): Boolean {
     return file != null && if (file.exists()) file.isDirectory else file.mkdirs()
