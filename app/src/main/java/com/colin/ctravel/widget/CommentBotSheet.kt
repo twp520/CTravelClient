@@ -32,7 +32,7 @@ class CommentBotSheet : BottomSheetDialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val mView = inflater.inflate(R.layout.bot_comment, container, false)
         //设置评论信息
-        mEdit = mView.findViewById<EditText>(R.id.bot_comment_edit)
+        mEdit = mView.findViewById(R.id.bot_comment_edit)
         val btn = mView.findViewById<ImageButton>(R.id.bot_comment_btn_send)
         mList = mView.findViewById(R.id.bot_comment_list)
         mAdapter = CommentAdapter(mTempData)

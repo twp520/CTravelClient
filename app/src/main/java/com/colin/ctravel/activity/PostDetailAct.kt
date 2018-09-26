@@ -93,7 +93,7 @@ class PostDetailAct : BaseActivity<BasePresenter>() {
             //下载评论数据
             val disposable = TravelModule.getPostComment(post.id)
                     .subscribe({ commentList ->
-                        if (commentList != null && commentList.size > 0) {
+                        if (commentList != null) {
                             //全部评论设置到 bot中
                             commentBot = CommentBotSheet()
                             val args = Bundle()
