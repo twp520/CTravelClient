@@ -15,21 +15,21 @@ import com.bumptech.glide.request.transition.Transition
 import com.colin.ctravel.R
 import com.colin.ctravel.adapter.CommentAdapter
 import com.colin.ctravel.base.BaseActivity
-import com.colin.ctravel.base.BasePresenter
 import com.colin.ctravel.bean.Comment
 import com.colin.ctravel.bean.PostInfo
-import com.colin.ctravel.module.TravelModule
-import com.colin.ctravel.net.RxNetLife
+import com.colin.ctravel.presenter.PostDetailPresenter
+import com.colin.ctravel.presenter.imp.PostDetailPresenterImp
 import com.colin.ctravel.util.GlideApp
 import com.colin.ctravel.util.LOG_TAG
 import com.colin.ctravel.util.TimeUtils
+import com.colin.ctravel.view.PostDetailView
 import com.colin.ctravel.widget.CommentBotSheet
 import com.socks.library.KLog
 import kotlinx.android.synthetic.main.activity_post_detail.*
 import org.json.JSONArray
 import java.text.SimpleDateFormat
 
-class PostDetailAct : BaseActivity<BasePresenter>() {
+class PostDetailAct : BaseActivity<PostDetailPresenter>(), PostDetailView {
 
     private var commentBot: CommentBotSheet? = null
     private var fourAdapter: CommentAdapter? = null
@@ -43,94 +43,52 @@ class PostDetailAct : BaseActivity<BasePresenter>() {
         return R.layout.activity_post_detail
     }
 
-    override fun createPresenter(): BasePresenter? {
-        return null
+    override fun createPresenter(): PostDetailPresenter? {
+        return PostDetailPresenterImp(this)
     }
 
-    @SuppressLint("SimpleDateFormat")
+
     override fun initView() {
         postponeEnterTransition()
         initActionBar()
         intent.extras?.let {
             val post = it.getParcelable<PostInfo>("post")
-            detail_coll_tl.title = "行程详情"
-            //图片
-            val pageAdapter = MyPageAdapter(post.imgs, this)
-            detail_photo_vp.adapter = pageAdapter
-            /*if (post.imgs?.isNotEmpty() == true) {
-                val jsonArray = JSONArray(post.imgs)
-                GlideApp.with(this).load(jsonArray[0])
-                        .into(detail_photos)
-            } else {
-                GlideApp.with(this).load(R.drawable.item_def)
-                        .into(detail_photos)
-            }*/
-            val user = post.user
-            if (user != null) {
-                GlideApp.with(this).load(user.headUrl)
-                        .optionalCircleCrop()
-                        .into(detail_user_head)
-                detail_user_nickname.text = user.nickname
-            }
-            //行程信息
-            detail_info_title.text = post.title
-            detail_info_content.text = post.content
-            if (post.startTime != null) {
-                detail_info_data.text = getString(R.string.detail_tv_startData,
-                        TimeUtils.millis2String(post.startTime!!.toLong(), SimpleDateFormat("yyyy-mm-dd")))
-            } else {
-                detail_info_data.text = getString(R.string.detail_tv_startData, TimeUtils.getNowString())
-            }
-            detail_info_dep.text = getString(R.string.detail_tv_dep, post.departure)
-            detail_info_des.text = getString(R.string.detail_tv_des, post.destination)
-            startPostponedEnterTransition()
+            initDetailInfo(post)
+            val initArgs = Bundle()
+            initArgs.putInt("pid", post.id)
+            mPresenter?.onAttach(initArgs)
             //下载评论数据
-            val disposable = TravelModule.getPostComment(post.id)
-                    .subscribe({ commentList ->
-                        if (commentList != null) {
-                            //全部评论设置到 bot中
-                            commentBot = CommentBotSheet()
-                            val args = Bundle()
-                            args.putParcelableArrayList("data", ArrayList<Comment>(commentList))
-                            commentBot?.arguments = args
-                            //取4条设置到这里
-                            fourAdapter = CommentAdapter(if (commentList.size > 4) commentList.subList(commentList.size - 4, commentList.size) else commentList)
-                            detail_comment_ten.adapter = fourAdapter
-                            initEvent(post)
-                        }
-                    }, { throwable ->
-                        showNetErrorMsg(throwable)
-                    })
-            RxNetLife.add(getNetKey(), disposable)
-        }
-
-    }
-
-    private fun initEvent(post: PostInfo) {
-        detail_comment_btn.setOnClickListener {
-            //弹出底部框
-            commentBot?.show(supportFragmentManager, "commentBot")
-        }
-
-        commentBot?.setCommentListener { content ->
-            KLog.e(LOG_TAG, "点击发送！！！")
-            if (content.isBlank()) {
-                showTipMessage("不能发送空白消息哦")
-                return@setCommentListener
-            }
-            val disposable = TravelModule.sendComment(content, post.id)
-                    .subscribe({
-                        //发送成功
-                        commentBot?.addData(it)
-                        fourAdapter?.addData(it)
-                        KLog.e(LOG_TAG, it.toString())
-                    }, {
-                        commentBot?.dismiss()
-                        showNetErrorMsg(it)
-                    })
-            RxNetLife.add(getNetKey(), disposable)
+            mPresenter?.loadCommentData()
         }
     }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun initDetailInfo(post: PostInfo) {
+        detail_coll_tl.title = "行程详情"
+        //图片
+        val pageAdapter = MyPageAdapter(post.imgs, this)
+        detail_photo_vp.adapter = pageAdapter
+        val user = post.user
+        if (user != null) {
+            GlideApp.with(this).load(user.headUrl)
+                    .optionalCircleCrop()
+                    .into(detail_user_head)
+            detail_user_nickname.text = user.nickname
+        }
+        //行程信息
+        detail_info_title.text = post.title
+        detail_info_content.text = post.content
+        if (post.startTime != null) {
+            detail_info_data.text = getString(R.string.detail_tv_startData,
+                    TimeUtils.millis2String(post.startTime!!.toLong(), SimpleDateFormat("yyyy-mm-dd")))
+        } else {
+            detail_info_data.text = getString(R.string.detail_tv_startData, TimeUtils.getNowString())
+        }
+        detail_info_dep.text = getString(R.string.detail_tv_dep, post.departure)
+        detail_info_des.text = getString(R.string.detail_tv_des, post.destination)
+        startPostponedEnterTransition()
+    }
+
 
     private fun initActionBar() {
         setSupportActionBar(detail_toolbar)
@@ -150,7 +108,53 @@ class PostDetailAct : BaseActivity<BasePresenter>() {
         detail_toolbar.setNavigationOnClickListener {
             supportFinishAfterTransition()
         }
+    }
 
+    override fun setCommentData(commentList: MutableList<Comment>?) {
+        if (commentList != null) {
+            //全部评论设置到 bot中
+            commentBot = CommentBotSheet()
+            val args = Bundle()
+            args.putParcelableArrayList("data", ArrayList<Comment>(commentList))
+            commentBot?.arguments = args
+            //取4条设置到这里
+            fourAdapter = CommentAdapter(if (commentList.size > 4) commentList.subList(commentList.size - 4, commentList.size) else commentList)
+            detail_comment_ten.adapter = fourAdapter
+            initEvent()
+        }
+    }
+
+    private fun initEvent() {
+        detail_comment_btn.setOnClickListener {
+            //弹出底部框
+            commentBot?.show(supportFragmentManager, "commentBot")
+        }
+
+        commentBot?.setCommentListener { content ->
+            KLog.e(LOG_TAG, "点击发送！！！")
+            if (content.isBlank()) {
+                showTipMessage("不能发送空白消息哦")
+                return@setCommentListener
+            }
+            mPresenter?.sendComment(content)
+        }
+    }
+
+    private var likeMenu: MenuItem? = null
+
+    override fun favSuccess() {
+        //将图标变成红色
+        likeMenu?.setIcon(R.drawable.icon_liked)
+    }
+
+    override fun commentSuccess(comment: Comment) {
+        //发送成功
+        commentBot?.addData(comment)
+        fourAdapter?.addData(comment)
+    }
+
+    override fun commentFail() {
+        commentBot?.dismiss()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -161,7 +165,10 @@ class PostDetailAct : BaseActivity<BasePresenter>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_detail_share -> showTipMessage("分享还没想好")
-            R.id.menu_detail_like -> showTipMessage("收藏还没想好")
+            R.id.menu_detail_like -> {
+                mPresenter?.favoritePost()
+                likeMenu = item
+            }
         }
         return true
     }

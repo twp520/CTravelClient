@@ -1,5 +1,6 @@
 package com.colin.ctravel.base
 
+import android.os.Bundle
 import com.colin.ctravel.net.RxNetLife
 
 /**
@@ -8,7 +9,7 @@ import com.colin.ctravel.net.RxNetLife
 open class BasePresenterImp<V : BaseView>(var view: V?) : BasePresenter {
 
 
-    override fun onAttach() {
+    override fun onAttach(bundle: Bundle) {
 
     }
 

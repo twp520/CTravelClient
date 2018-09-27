@@ -37,4 +37,11 @@ interface APIServers {
 
     @GET("post/getCommentByPostId")
     fun getCommentByPostId(@Query("postId") postId: Int): Observable<BaseResultBean<MutableList<Comment>>>
+
+    @POST("post/favPost")
+    @FormUrlEncoded
+    fun favoritePost(@Field("postId") postId: Int): Observable<BaseResultBean<String>>
+
+    @GET("post/getUserFav")
+    fun getUserFavoritePost(): Observable<BaseResultBean<MutableList<PostInfo>>>
 }

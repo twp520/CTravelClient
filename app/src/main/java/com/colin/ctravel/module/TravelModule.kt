@@ -171,6 +171,31 @@ object TravelModule {
     }
 
     /**
+     * 收藏一个帖子
+     * @param postId 帖子ID
+     * @return 结果
+     */
+    fun favoritePost(postId: Int): Observable<String> {
+        return BuildAPI.getAPISevers()
+                .favoritePost(postId)
+                .map(HandResultFunc())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    /**
+     * 获取用户的收藏列表
+     * @return 收藏列表
+     */
+    fun getUserFavoritePost(): Observable<MutableList<PostInfo>> {
+        return BuildAPI.getAPISevers()
+                .getUserFavoritePost()
+                .map(HandResultFunc())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    /**
      * 缓存用户信息
      * @param  user 用户信息
      */
