@@ -14,21 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.colin.ctravel.FileProvider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/ctravel_file_path" />
-        </provider>
+
 
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.SendPostActivity" />
-        <activity android:name=".photopicker.ImagePickerAct" />
-        <activity android:name=".photopicker.LargeActivity" />
         <activity android:name=".activity.PostDetailAct" />
         <activity android:name=".activity.SplashActivity">
             <intent-filter>

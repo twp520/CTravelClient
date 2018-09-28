@@ -30,6 +30,13 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView {
         //设置左边按钮
         initActionBar()
         mPresenter?.init()
+        initPost()
+        main_nav?.setNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                //TODO 切换Fragment
+            }
+            return@setNavigationItemSelectedListener true
+        }
     }
 
     private fun initActionBar() {
@@ -51,7 +58,6 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView {
         val d = when (user.gender) {
             0 -> getDrawable(R.drawable.gender_male)
             1 -> getDrawable(R.drawable.gender_female)
-            2 -> getDrawable(R.drawable.gender_male)
             else -> getDrawable(R.drawable.gender_male)
         }
         nickname.setCompoundDrawablesWithIntrinsicBounds(d, null, null, null)

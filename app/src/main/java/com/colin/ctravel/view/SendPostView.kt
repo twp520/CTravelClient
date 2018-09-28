@@ -2,7 +2,7 @@ package com.colin.ctravel.view
 
 import android.arch.lifecycle.Lifecycle
 import com.colin.ctravel.base.BaseView
-import com.colin.ctravel.photopicker.Image
+import com.colin.picklib.Image
 
 /**
  *create by colin 2018/9/14

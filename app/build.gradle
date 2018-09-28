@@ -27,7 +27,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     buildToolsVersion '27.0.3'
+}
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
@@ -35,6 +41,8 @@ dependencies {
     def room_version = "1.1.1"
     def compat_version = "27.1.1"
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.aar'], dir: 'libs')
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "android.arch.lifecycle:extensions:$lifecycle_version"
     kapt "android.arch.lifecycle:compiler:$lifecycle_version"
@@ -68,8 +76,8 @@ dependencies {
     implementation 'com.tencent.bugly:nativecrashreport:latest.release'
     //阿里云 OSS
     implementation 'com.aliyun.dpa:oss-android-sdk:2.8.4'
-    //查看大图
-    implementation 'com.github.chrisbanes:PhotoView:2.1.4'
+
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

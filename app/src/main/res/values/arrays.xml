@@ -3,6 +3,5 @@
     <string-array name="array_gender">
         <item>男生</item>
         <item>女生</item>
-        <item>火星人</item>
     </string-array>
 </resources>

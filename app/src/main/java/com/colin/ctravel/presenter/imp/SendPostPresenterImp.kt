@@ -30,7 +30,7 @@ class SendPostPresenterImp(view: SendPostView) : BasePresenterImp<SendPostView>(
         val photos = view?.getPhotos()
         if (photos != null && photos.size > 0) {
             //上传图片
-            TravelModule.upLoadPhoto(photos, view?.getViewContext())
+            TravelModule.upLoadPhotoList(photos, view?.getViewContext())
                     .observe({ view!!.getLifecycle() }) {
                         if (it == null || it == "result_fail") {
                             view?.dismissLoading()

@@ -10,14 +10,17 @@ import com.colin.ctravel.db.AppDataBase
 import com.colin.ctravel.luban.Luban
 import com.colin.ctravel.net.BuildAPI
 import com.colin.ctravel.net.HandResultFunc
-import com.colin.ctravel.photopicker.Image
 import com.colin.ctravel.util.LOG_TAG
 import com.colin.ctravel.util.OSSManager
 import com.colin.ctravel.util.SPUtils
 import com.colin.ctravel.util.photoCompressDirPath
+import com.colin.picklib.Image
 import com.socks.library.KLog
+import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
+import io.reactivex.FlowableOnSubscribe
 import io.reactivex.Observable
+import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.json.JSONArray
@@ -52,12 +55,12 @@ object TravelModule {
                 .subscribeOn(Schedulers.newThread())
     }
 
-    fun register(account: String, pwd: String, nickname: String, gender: Int): Observable<User> {
+    fun register(account: String, pwd: String, nickname: String, gender: Int, headUrl: String): Observable<User> {
         val map = hashMapOf<String, Any>()
         map["account"] = account
         map["passworld"] = pwd
         map["nickname"] = nickname
-        map["headUrl"] = ""//TODO 设置一个默认头像链接
+        map["headUrl"] = headUrl
         map["gender"] = gender
         map["fromWx"] = false
         return BuildAPI.getAPISevers()
@@ -80,7 +83,20 @@ object TravelModule {
     }
 
     /**
-     * 同步上传单张图片到阿里云OSS
+     * 上传单张图片到阿里云OSS
+     * @param image 图片
+     * @return 图片地址
+     */
+    fun upLoadPhoto(image: Image): Observable<String> {
+        return Observable.create(ObservableOnSubscribe<String> {
+            val add = OSSManager.upLoadFileSync(File(image.imageFile))
+            it.onNext(add)
+            it.onComplete()
+        }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
+    }
+
+    /**
+     * 上传单张图片到阿里云OSS
      * @param file 图片文件
      * @return 图片地址
      */
@@ -93,7 +109,7 @@ object TravelModule {
      * @param images 图片集合
      * @return 多张图片地址的json字符串
      */
-    fun upLoadPhoto(images: MutableList<Image>, context: Context?): LiveData<String> {
+    fun upLoadPhotoList(images: MutableList<Image>, context: Context?): LiveData<String> {
         val imgArray = JSONArray()
 
         val liveData: MutableLiveData<String> = MutableLiveData()

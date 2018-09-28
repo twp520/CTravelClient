@@ -8,10 +8,10 @@
     tools:context=".activity.LoginActivity">
 
     <ImageView
-        android:layout_width="@dimen/dp50"
-        android:layout_height="@dimen/dp50"
+        android:layout_width="@dimen/dp80"
+        android:layout_height="@dimen/dp80"
         android:layout_marginStart="@dimen/dp16"
-        android:layout_marginTop="@dimen/dp50"
+        android:layout_marginTop="@dimen/dp80"
         android:src="@drawable/logo"
         tools:ignore="ContentDescription" />
 

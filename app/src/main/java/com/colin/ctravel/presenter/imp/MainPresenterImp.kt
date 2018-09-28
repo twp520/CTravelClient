@@ -1,7 +1,6 @@
 package com.colin.ctravel.presenter.imp
 
 import com.colin.ctravel.base.BasePresenterImp
-import com.colin.ctravel.bean.PostInfo
 import com.colin.ctravel.module.TravelModule
 import com.colin.ctravel.presenter.MainPresenter
 import com.colin.ctravel.view.MainView
@@ -23,7 +22,6 @@ class MainPresenterImp(view: MainView) : BasePresenterImp<MainView>(view), MainP
                     view?.showNetErrorMsg(it)
                     it.printStackTrace()
                 })
-        view?.initPost()
     }
 
 

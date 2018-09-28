@@ -10,12 +10,12 @@ import android.view.MenuItem
 import com.colin.ctravel.R
 import com.colin.ctravel.adapter.PhotoAdapter
 import com.colin.ctravel.base.BaseActivity
-import com.colin.ctravel.photopicker.Image
-import com.colin.ctravel.photopicker.ImagePicker
 import com.colin.ctravel.presenter.SendPostPresenter
 import com.colin.ctravel.presenter.imp.SendPostPresenterImp
 import com.colin.ctravel.util.GalleryItemDecoration
 import com.colin.ctravel.view.SendPostView
+import com.colin.picklib.Image
+import com.colin.picklib.ImagePicker
 import kotlinx.android.synthetic.main.activity_send_post.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -81,7 +81,7 @@ class SendPostActivity : BaseActivity<SendPostPresenter>(), SendPostView {
     override fun onMenuClick(menuItem: MenuItem) {
         when (menuItem.itemId) {
             R.id.menu_post_send -> {
-                //TODO 发送按钮
+                //发送按钮
                 sendPost()
             }
             R.id.menu_post_add_photo -> {
@@ -100,7 +100,7 @@ class SendPostActivity : BaseActivity<SendPostPresenter>(), SendPostView {
     }
 
     private fun sendPost() {
-        //TODO 进行检查
+        //进行检查
         if (getTitleText().isBlank()) {
             showTipMessage("请写一个标题吧~~")
             return

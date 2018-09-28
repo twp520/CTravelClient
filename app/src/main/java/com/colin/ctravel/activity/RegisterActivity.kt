@@ -2,17 +2,23 @@ package com.colin.ctravel.activity
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Intent
 import android.view.WindowManager
 import com.colin.ctravel.R
 import com.colin.ctravel.base.BaseActivity
 import com.colin.ctravel.base.BasePresenter
 import com.colin.ctravel.module.TravelModule
 import com.colin.ctravel.net.RxNetLife
+import com.colin.ctravel.util.GlideApp
 import com.colin.ctravel.util.LOG_TAG
+import com.colin.picklib.Image
+import com.colin.picklib.ImagePicker
 import com.socks.library.KLog
 import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : BaseActivity<BasePresenter>() {
+
+    private var head: Image? = null
 
     override fun beforeSetContentView() {
         //请求沉浸式
@@ -31,6 +37,16 @@ class RegisterActivity : BaseActivity<BasePresenter>() {
 //        setNavClick()
         register_btn?.setOnClickListener {
             register()
+        }
+
+        register_icon?.setOnClickListener {
+            //上传头像
+            ImagePicker.Builder().with(this)
+                    .requestCode(200)
+                    .isSingleModel(true)
+                    .needCrop(true)
+                    .build()
+                    .start()
         }
     }
 
@@ -52,6 +68,11 @@ class RegisterActivity : BaseActivity<BasePresenter>() {
             register_input_account.error = "请输入密码"
             return
         }
+
+        if (head == null) {
+            showTipMessage("请选择一个头像")
+            return
+        }
         var gender = 0
         //选择性别
         val dialog = AlertDialog.Builder(this)
@@ -67,10 +88,17 @@ class RegisterActivity : BaseActivity<BasePresenter>() {
                 .create()
         dialog.show()
 
+
     }
 
     private fun register(account: String, nickname: String, pwd: String, gender: Int) {
-        val disposable = TravelModule.register(account, pwd, nickname, gender)
+        if (head == null)
+            return
+        showLoading()
+        val disposable = TravelModule.upLoadPhoto(head!!)
+                .flatMap {
+                    TravelModule.register(account, pwd, nickname, gender, it)
+                }
                 .flatMap {
                     TravelModule.saveUser(it, getViewContext())
                 }
@@ -81,12 +109,23 @@ class RegisterActivity : BaseActivity<BasePresenter>() {
                     setResult(Activity.RESULT_OK)
                     finish()
                 }, {
-                    it.printStackTrace()
+                    dismissLoading()
                     showNetErrorMsg(it)
-                    it.printStackTrace()
                 })
         RxNetLife.add(getNetKey(), disposable)
     }
 
-
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 200 && resultCode == Activity.RESULT_OK && data != null) {
+            val images = data.getParcelableArrayListExtra<Image>("images")
+            if (images != null && images.size > 0) {
+                head = images[0]
+                GlideApp.with(this)
+                        .load(images[0].imagePath)
+                        .optionalCircleCrop()
+                        .into(register_icon)
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
 }
