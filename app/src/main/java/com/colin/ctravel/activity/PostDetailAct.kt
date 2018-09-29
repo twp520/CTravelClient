@@ -20,11 +20,10 @@ import com.colin.ctravel.bean.PostInfo
 import com.colin.ctravel.presenter.PostDetailPresenter
 import com.colin.ctravel.presenter.imp.PostDetailPresenterImp
 import com.colin.ctravel.util.GlideApp
-import com.colin.ctravel.util.LOG_TAG
 import com.colin.ctravel.util.TimeUtils
+import com.colin.ctravel.util.jumpActivity
 import com.colin.ctravel.view.PostDetailView
 import com.colin.ctravel.widget.CommentBotSheet
-import com.socks.library.KLog
 import kotlinx.android.synthetic.main.activity_post_detail.*
 import org.json.JSONArray
 import java.text.SimpleDateFormat
@@ -131,7 +130,6 @@ class PostDetailAct : BaseActivity<PostDetailPresenter>(), PostDetailView {
         }
 
         commentBot?.setCommentListener { content ->
-            KLog.e(LOG_TAG, "点击发送！！！")
             if (content.isBlank()) {
                 showTipMessage("不能发送空白消息哦")
                 return@setCommentListener
@@ -164,7 +162,9 @@ class PostDetailAct : BaseActivity<PostDetailPresenter>(), PostDetailView {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_detail_share -> showTipMessage("分享还没想好")
+            R.id.menu_detail_share -> {
+                jumpActivity(UserProfileAct::class.java)
+            }
             R.id.menu_detail_like -> {
                 mPresenter?.favoritePost()
                 likeMenu = item
