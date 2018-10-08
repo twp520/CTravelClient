@@ -10,9 +10,9 @@
             android:id="@+id/menu_nav_fav"
             android:checkable="true"
             android:title="@string/nav_fav" />
-        <item
+        <!--<item
             android:id="@+id/menu_nav_chat"
             android:checkable="true"
-            android:title="@string/nav_chat" />
+            android:title="@string/nav_chat" />-->
     </group>
 </menu>

@@ -44,4 +44,7 @@ interface APIServers {
 
     @GET("post/getUserFav")
     fun getUserFavoritePost(): Observable<BaseResultBean<MutableList<PostInfo>>>
+
+    @GET("post/isFavorite")
+    fun queryUserFavorite(@Query("postId") postId: Int): Observable<BaseResultBean<Boolean>>
 }

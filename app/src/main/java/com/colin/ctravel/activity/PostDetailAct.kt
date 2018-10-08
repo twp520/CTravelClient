@@ -1,5 +1,6 @@
 package com.colin.ctravel.activity
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.Bitmap
@@ -20,10 +21,11 @@ import com.colin.ctravel.bean.PostInfo
 import com.colin.ctravel.presenter.PostDetailPresenter
 import com.colin.ctravel.presenter.imp.PostDetailPresenterImp
 import com.colin.ctravel.util.GlideApp
+import com.colin.ctravel.util.ShareUtil
 import com.colin.ctravel.util.TimeUtils
-import com.colin.ctravel.util.jumpActivity
 import com.colin.ctravel.view.PostDetailView
 import com.colin.ctravel.widget.CommentBotSheet
+import com.tbruyelle.rxpermissions2.RxPermissions
 import kotlinx.android.synthetic.main.activity_post_detail.*
 import org.json.JSONArray
 import java.text.SimpleDateFormat
@@ -157,20 +159,50 @@ class PostDetailAct : BaseActivity<PostDetailPresenter>(), PostDetailView {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_post_detail, menu)
+        likeMenu = menu?.findItem(R.id.menu_detail_like)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_detail_share -> {
-                jumpActivity(UserProfileAct::class.java)
+                //分享
+                share()
             }
             R.id.menu_detail_like -> {
                 mPresenter?.favoritePost()
-                likeMenu = item
             }
         }
         return true
+    }
+
+    private fun share() {
+        val permission = RxPermissions(this)
+        permission.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe {
+                    if (it) {
+                        val post = intent.extras.getParcelable<PostInfo>("post")
+                        showLoading()
+                        val jsonArray = JSONArray(post.imgs)
+                        GlideApp.with(this)
+                                .asBitmap()
+                                .load(jsonArray[0])
+                                .into(object : SimpleTarget<Bitmap>() {
+                                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                                        ShareUtil.shareBitmap(this@PostDetailAct, resource, post.title
+                                                ?: "", post.content
+                                                ?: "")
+                                                .subscribe({ intent ->
+                                                    dismissLoading()
+                                                    startActivity(intent)
+                                                }, { th ->
+                                                    dismissLoading()
+                                                    th.printStackTrace()
+                                                })
+                                    }
+                                })
+                    }
+                }
     }
 
     class MyPageAdapter(imgs: String?, var context: Activity) : PagerAdapter() {

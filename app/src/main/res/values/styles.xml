@@ -35,7 +35,7 @@
     <style name="itemPostTitle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/dp60</item>
-        <item name="android:layout_marginTop">110dp</item>
+        <item name="android:layout_marginTop">140dp</item>
         <item name="android:gravity">bottom</item>
         <item name="android:paddingStart">@dimen/dp16</item>
         <item name="android:paddingEnd">@dimen/dp16</item>
@@ -48,7 +48,7 @@
     <style name="itemPostUserTitle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">@dimen/dp170</item>
+        <item name="android:layout_marginTop">@dimen/dp200</item>
         <item name="android:padding">@dimen/dp16</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:focusable">true</item>
@@ -60,9 +60,9 @@
     <style name="itemPostContent">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">@dimen/dp210</item>
+        <item name="android:layout_marginTop">240dp</item>
         <item name="android:padding">@dimen/dp16</item>
-        <item name="android:lines">2</item>
+        <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
         <item name="android:textColor">@color/gray</item>
         <item name="android:textSize">@dimen/font_size_14</item>
@@ -70,7 +70,7 @@
 
     <style name="itemPostPhoto">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/dp170</item>
+        <item name="android:layout_height">@dimen/dp200</item>
         <item name="android:scaleType">centerCrop</item>
     </style>
 

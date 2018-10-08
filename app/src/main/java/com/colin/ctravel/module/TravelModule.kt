@@ -16,9 +16,7 @@ import com.colin.ctravel.util.SPUtils
 import com.colin.ctravel.util.photoCompressDirPath
 import com.colin.picklib.Image
 import com.socks.library.KLog
-import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
-import io.reactivex.FlowableOnSubscribe
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -75,7 +73,6 @@ object TravelModule {
      * @return 帖子列表
      */
     fun getAllPost(): Observable<MutableList<PostInfo>> {
-
         return BuildAPI.getAPISevers()
                 .getAllPost().map(HandResultFunc())
                 .subscribeOn(Schedulers.newThread())
@@ -206,6 +203,17 @@ object TravelModule {
     fun getUserFavoritePost(): Observable<MutableList<PostInfo>> {
         return BuildAPI.getAPISevers()
                 .getUserFavoritePost()
+                .map(HandResultFunc())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    /**
+     * 查询是否收藏过
+     */
+    fun queryIsFavorite(postId: Int): Observable<Boolean> {
+        return BuildAPI.getAPISevers()
+                .queryUserFavorite(postId)
                 .map(HandResultFunc())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())

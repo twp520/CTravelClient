@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <external-path
+        name="ctravel_external_path"
+        path="." />
+    <cache-path
+        name="ctravel_private_cache"
+        path="." />
+    <external-cache-path
+        name="ctravel_external_cache"
+        path="." />
+</paths>

@@ -1,12 +1,15 @@
 package com.colin.ctravel.activity
 
+import android.support.v4.app.Fragment
 import android.support.v7.app.ActionBarDrawerToggle
+import android.util.SparseArray
 import android.view.Gravity
 import android.widget.ImageView
 import android.widget.TextView
 import com.colin.ctravel.R
 import com.colin.ctravel.base.BaseActivity
 import com.colin.ctravel.bean.User
+import com.colin.ctravel.fragment.FavoriteFragment
 import com.colin.ctravel.fragment.PostFragment
 import com.colin.ctravel.presenter.MainPresenter
 import com.colin.ctravel.presenter.imp.MainPresenterImp
@@ -17,6 +20,7 @@ import kotlinx.android.synthetic.main.base_toolbar.*
 
 class MainActivity : BaseActivity<MainPresenter>(), MainView {
 
+    private var fragmentArray: SparseArray<Fragment>? = null
 
     override fun setContentViewId(): Int {
         return R.layout.activity_main
@@ -30,13 +34,16 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView {
         //设置左边按钮
         initActionBar()
         mPresenter?.init()
-        initPost()
-        main_nav?.setNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                //TODO 切换Fragment
-            }
-            return@setNavigationItemSelectedListener true
+        fragmentArray = SparseArray()
+        val postF = PostFragment()
+        supportFragmentManager.beginTransaction().add(R.id.main_fragment, postF, postF::class.java.simpleName).commit()
+        fragmentArray?.put(R.id.menu_nav_post, postF)
+        main_nav.setNavigationItemSelectedListener { item ->
+            switchFragment(item.itemId)
+            supportActionBar?.title = item.title
+            true
         }
+
     }
 
     private fun initActionBar() {
@@ -48,6 +55,26 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView {
         main_drawer.addDrawerListener(toggle)
     }
 
+    private fun switchFragment(id: Int) {
+        var fragment = fragmentArray?.get(id)
+        if (fragment == null) {
+            fragment = when (id) {
+                R.id.menu_nav_post -> {
+                    PostFragment()
+                }
+                R.id.menu_nav_fav -> {
+                    FavoriteFragment()
+                }
+                else -> PostFragment()
+            }
+            fragmentArray?.put(id, fragment)
+        }
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.main_fragment, fragment, fragment::class.java.simpleName)
+                .commit()
+
+        main_drawer.closeDrawers()
+    }
 
     override fun initUser(user: User) {
         val icon = main_nav.getHeaderView(0).findViewById<ImageView>(R.id.nav_head_icon)
@@ -76,12 +103,6 @@ class MainActivity : BaseActivity<MainPresenter>(), MainView {
         }
     }
 
-    override fun initPost() {
-        val pf = PostFragment()
-        supportFragmentManager.beginTransaction()
-                .add(R.id.main_fragment, pf, "postFragment")
-                .commit()
-    }
 
     override fun onBackPressed() {
         if (main_drawer.isDrawerOpen(Gravity.START)) {

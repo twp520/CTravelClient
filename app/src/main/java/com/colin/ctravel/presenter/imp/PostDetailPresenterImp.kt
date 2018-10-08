@@ -28,6 +28,14 @@ class PostDetailPresenterImp(view: PostDetailView) : BasePresenterImp<PostDetail
                     view?.showNetErrorMsg(throwable)
                 })
         RxNetLife.add(view?.getNetKey(), disposable)
+
+        val d1 = TravelModule.queryIsFavorite(postId)
+                .subscribe({
+                    view?.favSuccess()
+                }, {
+                    view?.showNetErrorMsg(it)
+                })
+        RxNetLife.add(view?.getNetKey(), d1)
     }
 
     override fun favoritePost() {

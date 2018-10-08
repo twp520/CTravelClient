@@ -36,6 +36,11 @@ abstract class BaseActivity<P : BasePresenter> : AppCompatActivity(), BaseView {
         supportActionBar?.setTitle(titleRes)
     }
 
+    fun setToolbarTitle(titleText:CharSequence){
+        setSupportActionBar(base_toolbar)
+        supportActionBar?.title = titleText
+    }
+
     fun setNavClick() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)

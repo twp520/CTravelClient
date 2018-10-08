@@ -1,7 +1,6 @@
 package com.colin.ctravel.fragment
 
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
@@ -13,7 +12,6 @@ import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.colin.ctravel.R
 import com.colin.ctravel.activity.PostDetailAct
-import com.colin.ctravel.activity.SendPostActivity
 import com.colin.ctravel.adapter.PostAdapter
 import com.colin.ctravel.base.BaseFragment
 import com.colin.ctravel.bean.PostInfo
@@ -26,18 +24,16 @@ import com.socks.library.KLog
 /**
  *create by colin 2018/9/26
  */
-class PostFragment : BaseFragment() {
+class FavoriteFragment : BaseFragment() {
 
     private var mAdapter: PostAdapter? = null
     private var mRefresh: SmartRefreshLayout? = null
     private var mRecycler: RecyclerView? = null
-    private var mFab: FloatingActionButton? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_post, container, false)
-        mRefresh = view.findViewById(R.id.post_refresh)
-        mRecycler = view.findViewById(R.id.post_recycler)
-        mFab = view.findViewById(R.id.post_fab)
+        val view = inflater.inflate(R.layout.fragment_favorite, container, false)
+        mRefresh = view.findViewById(R.id.fav_refresh)
+        mRecycler = view.findViewById(R.id.fav_recycler)
         initRecyclerView()
         return view
     }
@@ -50,10 +46,6 @@ class PostFragment : BaseFragment() {
         mAdapter = PostAdapter(mutableListOf())
         mAdapter?.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM)
         mRecycler?.adapter = mAdapter
-        mFab?.isEnabled = true
-        mFab?.setOnClickListener {
-            jumpActivity(SendPostActivity::class.java)
-        }
         mRefresh?.autoRefresh(300)
         mRefresh?.setOnRefreshListener {
             //刷新数据
@@ -83,7 +75,7 @@ class PostFragment : BaseFragment() {
     }
 
     private fun loadData(page: Int) {
-        TravelModule.getAllPost()
+        TravelModule.getUserFavoritePost()
                 .subscribe({
                     refreshList(it)
                 }, {

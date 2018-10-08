@@ -2,9 +2,12 @@ package com.colin.ctravel.util
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.support.v4.app.Fragment
+import android.support.v4.content.FileProvider
 import android.widget.Toast
 import java.io.File
 import java.io.IOException
@@ -44,7 +47,7 @@ fun createOrExistsDir(file: File?): Boolean {
 
 fun createOrExistsFile(file: File?): Boolean {
     if (file == null) return false
-    if (file.exists()) return file.isFile()
+    if (file.exists()) return file.isFile
     if (!createOrExistsDir(file.parentFile)) return false
     return try {
         file.createNewFile()
@@ -53,4 +56,11 @@ fun createOrExistsFile(file: File?): Boolean {
         false
     }
 
+}
+
+fun getUriFromFile(context: Context, file: File): Uri {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+        FileProvider.getUriForFile(context, "com.colin.ctravel.FileProvider", file)
+    else
+        Uri.fromFile(file)
 }

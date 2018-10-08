@@ -11,5 +11,5 @@ interface MainView : BaseView {
 
     fun initUser(user: User)
 
-    fun initPost()
+//    fun initPost()
 }
