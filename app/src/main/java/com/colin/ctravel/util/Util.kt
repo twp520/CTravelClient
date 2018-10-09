@@ -31,14 +31,20 @@ fun Context.jumpActivity(clazz: Class<*>, args: Bundle? = null, options: Bundle?
     else startActivity(intent, options)
 }
 
-fun Fragment.jumpActivity(clazz: Class<*>, args: Bundle? = null, options: Bundle? = null) {
+fun Fragment.jumpActivity(clazz: Class<*>, args: Bundle? = null, options: Bundle? = null, requestCode: Int = -1) {
     val intent = Intent(activity, clazz)
     args?.let {
         intent.putExtras(it)
     }
-    if (options == null)
-        startActivity(intent)
-    else startActivity(intent, options)
+    if (requestCode == -1) {
+        if (options == null)
+            startActivity(intent)
+        else startActivity(intent, options)
+    } else {
+        if (options == null)
+            startActivityForResult(intent, requestCode)
+        else startActivityForResult(intent, requestCode, options)
+    }
 }
 
 fun createOrExistsDir(file: File?): Boolean {

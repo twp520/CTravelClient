@@ -77,3 +77,6 @@
 #add bugly
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
+
+-keep public class com.colin.picklib.**{*;}
+-keep public class com.github.chrisbanes.photoview.**{*;}

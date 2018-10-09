@@ -158,6 +158,7 @@ class SendPostActivity : BaseActivity<SendPostPresenter>(), SendPostView {
     }
 
     override fun sendSuccess() {
+        setResult(Activity.RESULT_OK)
         finish()
     }
 }

@@ -31,7 +31,8 @@ class PostDetailPresenterImp(view: PostDetailView) : BasePresenterImp<PostDetail
 
         val d1 = TravelModule.queryIsFavorite(postId)
                 .subscribe({
-                    view?.favSuccess()
+                    if (it)
+                        view?.favSuccess()
                 }, {
                     view?.showNetErrorMsg(it)
                 })

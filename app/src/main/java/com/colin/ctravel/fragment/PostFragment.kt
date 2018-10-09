@@ -1,5 +1,7 @@
 package com.colin.ctravel.fragment
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.ActivityOptionsCompat
@@ -52,7 +54,7 @@ class PostFragment : BaseFragment() {
         mRecycler?.adapter = mAdapter
         mFab?.isEnabled = true
         mFab?.setOnClickListener {
-            jumpActivity(SendPostActivity::class.java)
+            jumpActivity(SendPostActivity::class.java, requestCode = 100)
         }
         mRefresh?.autoRefresh(300)
         mRefresh?.setOnRefreshListener {
@@ -102,6 +104,14 @@ class PostFragment : BaseFragment() {
                 shareView,
                 getString(R.string.t_post_list_to_detail))
         jumpActivity(PostDetailAct::class.java, bundle, optionsCompat.toBundle())
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        //发送成功后刷新
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
+            mRefresh?.autoRefresh(100)
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onDestroyView() {
