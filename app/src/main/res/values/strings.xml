@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">结伴同游</string>
+    <string name="app_name">阡陌</string>
 
     <!-- 登陆页面 -->
     <string name="hint_username">请输入手机号码</string>
@@ -8,8 +8,8 @@
     <string name="login">登陆</string>
     <string name="loginWX">微信登陆</string>
     <string name="register">注册</string>
-    <string name="login_welcome">Welcome Back,</string>
-    <string name="login_welcome_login">Sign in to continue</string>
+    <string name="login_welcome">阡陌</string>
+    <string name="login_welcome_login">幸得识卿桃花面，从此阡陌多暖春。</string>
     <string name="login_no_account">没有账号？立即注册</string>
     <string name="register_welcome">Hey, Welcome you.</string>
     <string name="hint_nickname">给自己取一个昵称</string>
