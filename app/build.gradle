@@ -23,16 +23,17 @@ android {
     }
     signingConfigs {
         release {
-            keyAlias 'colinAlias'
-            keyPassword '333565'
+            keyAlias 'colinalias'
+            keyPassword '123456'
             storeFile file('colin.jks')
-            storePassword '333565'
+            storePassword '123456'
         }
     }
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 
