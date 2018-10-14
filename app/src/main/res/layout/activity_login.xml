@@ -17,7 +17,7 @@
 
     <TextView
         style="@style/pagePadding.Warp"
-        android:layout_marginTop="@dimen/dp20"
+        android:layout_marginTop="@dimen/dp50"
         android:text="@string/login_welcome"
         android:textColor="@color/font_black"
         android:textSize="30sp" />
