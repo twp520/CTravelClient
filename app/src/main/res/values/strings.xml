@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">阡陌</string>
+    <string name="app_name">阡陌旅行</string>
 
     <!-- 登陆页面 -->
     <string name="hint_username">请输入手机号码</string>

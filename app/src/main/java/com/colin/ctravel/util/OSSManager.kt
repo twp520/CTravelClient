@@ -32,9 +32,10 @@ object OSSManager {
         // 构造上传请求
         val bucket = "colin-ctravel-pictuer"
         // 构造上传请求
-        val put = PutObjectRequest(bucket, "photo/" + file.name, file.absolutePath)
+        val timeSp = System.currentTimeMillis()
+        val put = PutObjectRequest(bucket, "photo/" + file.name + timeSp, file.absolutePath)
         ossClient!!.putObject(put)
-        return getFileUrl(file.name)
+        return getFileUrl(file.name + timeSp)
     }
 
 
