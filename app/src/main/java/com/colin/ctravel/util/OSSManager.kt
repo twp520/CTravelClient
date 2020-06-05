@@ -14,8 +14,8 @@ object OSSManager {
     private var ossClient: OSSClient? = null
 
     fun init(context: Context) {
-        val accessKeyId = "LTAIrr1PPwsT7Oxr"
-        val accessKeySecret = "rfQRPI9jofJxJVrSbn19SY638aj3Px"
+        val accessKeyId = ""
+        val accessKeySecret = ""
         val credentialProvider = OSSStsTokenCredentialProvider(accessKeyId, accessKeySecret, "")
         //该配置类如果不设置，会有默认配置，具体可看该类
         val conf = ClientConfiguration()
@@ -40,7 +40,7 @@ object OSSManager {
 
 
     private fun getFileUrl(fileName: String): String {
-        val fileUrlFix = "https://colin-ctravel-pictuer.oss-cn-beijing.aliyuncs.com/photo/"
+        val fileUrlFix = ""
         return fileUrlFix + fileName
     }
 
